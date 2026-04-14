@@ -3,67 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Q2 Saloon — Vehículos Premium | Quito</title>
+<title>Q2 Saloon — Vehículos Premium</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#07101e;
-  --surface:#0b1729;
-  --card:#0e1d33;
-  --line:rgba(200,184,154,0.1);
-  --beige:#c8b89a;
-  --white:#f0ebe2;
-  --gray:#506480;
-  --green:#25D366;
-  --radius:14px;
-}
-
-*{margin:0;padding:0;box-sizing:border-box}
 body{
+  margin:0;
   font-family:'Inter',sans-serif;
-  background:var(--bg);
-  color:var(--white);
-  line-height:1.5;
+  background:#0a0f1c;
+  color:white;
 }
 
 /* NAV */
 nav{
   position:fixed;
-  top:0;
   width:100%;
-  height:70px;
+  top:0;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(10px);
+  padding:15px 40px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:0 30px;
-  background:rgba(7,16,30,0.85);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--line);
 }
 
-.nav-links{
-  display:flex;
-  gap:25px;
-  list-style:none;
-}
-
-.nav-links a{
-  font-size:14px;
+nav a{
   color:#ccc;
+  margin-left:20px;
+  text-decoration:none;
 }
 
-.nav-links a:hover{
-  color:var(--beige);
+nav a:hover{
+  color:#c8b89a;
 }
 
 /* HERO */
 .hero{
   height:100vh;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   text-align:center;
   background:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80') center/cover;
 }
@@ -75,30 +55,32 @@ nav{
 
 .hero p{
   color:#aaa;
-  margin-top:10px;
 }
 
 .btn{
   display:inline-block;
   margin-top:20px;
   padding:12px 24px;
+  background:#c8b89a;
+  color:black;
   border-radius:50px;
-  background:var(--beige);
-  color:#000;
   font-weight:600;
 }
 
-/* GRID */
+/* INVENTARIO */
+.section{
+  padding:80px 40px;
+}
+
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
   gap:20px;
-  padding:80px 30px;
 }
 
 .card{
-  background:var(--card);
-  border-radius:var(--radius);
+  background:#111827;
+  border-radius:12px;
   overflow:hidden;
 }
 
@@ -113,12 +95,88 @@ nav{
 }
 
 .price{
-  color:var(--beige);
+  color:#c8b89a;
   font-weight:800;
-  margin-top:10px;
 }
 
+/* CONTACTO */
+.contact{
+  text-align:center;
+}
+
+.whatsapp{
+  display:inline-block;
+  margin-top:20px;
+  background:#25D366;
+  color:white;
+  padding:14px 24px;
+  border-radius:50px;
+  font-weight:700;
+}
 </style>
 </head>
 
 <body>
+
+<nav>
+  <div><strong>Q2 Saloon</strong></div>
+  <div>
+    <a href="#inventario">Inventario</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <h1>Vehículos Premium</h1>
+    <p>Compra con confianza en Quito</p>
+    <a href="#inventario" class="btn">Ver inventario</a>
+  </div>
+</section>
+
+<section class="section" id="inventario">
+  <h2>Inventario</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d" />
+      <div class="card-body">
+        <h3>Mercedes C300 2019</h3>
+        <p>66,000 km · Quito</p>
+        <div class="price">$49,900</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738" />
+      <div class="card-body">
+        <h3>Toyota Sequoia 2019</h3>
+        <p>26,000 millas · Quito</p>
+        <div class="price">$85,000</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8" />
+      <div class="card-body">
+        <h3>BMW X6 M Competition 2022</h3>
+        <p>17,000 millas · Quito</p>
+        <div class="price">$177,000</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section contact" id="contacto">
+  <h2>Contacto</h2>
+  <p>Habla con nosotros directamente</p>
+
+  <a class="whatsapp" href="https://api.whatsapp.com/send?phone=593995393656" target="_blank">
+    WhatsApp
+  </a>
+</section>
+
+</body>
+</html>
