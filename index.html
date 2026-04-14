@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q2 Saloon — Vehículos Premium | Quito</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#07101e;
+  --surface:#0b1729;
+  --card:#0e1d33;
+  --line:rgba(200,184,154,0.1);
+  --beige:#c8b89a;
+  --white:#f0ebe2;
+  --gray:#506480;
+  --green:#25D366;
+  --radius:14px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  line-height:1.5;
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  height:70px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 30px;
+  background:rgba(7,16,30,0.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+
+.nav-links{
+  display:flex;
+  gap:25px;
+  list-style:none;
+}
+
+.nav-links a{
+  font-size:14px;
+  color:#ccc;
+}
+
+.nav-links a:hover{
+  color:var(--beige);
+}
+
+/* HERO */
+.hero{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80') center/cover;
+}
+
+.hero h1{
+  font-size:48px;
+  font-weight:800;
+}
+
+.hero p{
+  color:#aaa;
+  margin-top:10px;
+}
+
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:12px 24px;
+  border-radius:50px;
+  background:var(--beige);
+  color:#000;
+  font-weight:600;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  padding:80px 30px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+
+.card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+.card-body{
+  padding:20px;
+}
+
+.price{
+  color:var(--beige);
+  font-weight:800;
+  margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
