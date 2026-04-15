@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Q2 Saloon — Encuentra el auto de tus sueños| Quito Ecuador</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/infooxbarec-star/pruebaq2saloon/refs/heads/main/logo.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap" rel="stylesheet"/>
@@ -61,16 +62,13 @@ nav.scrolled{
   backdrop-filter:blur(18px);
   border-bottom:1px solid var(--line);
 }
-.nav-logo-mark{
+.nav-logo{display:flex;align-items:center}
+.nav-logo-img{
   display:block;
-  width:170px;
-  height:40px;
-  background-image:
-    url('https://images.patiotuerca.com/thumbs/s/1045x290/amz_ptf_ecuador/dealers/378/principal.jpg'),
-    url('https://lh3.googleusercontent.com/sitesv/AA5AbUD1XzyVON421qqTAUhPR0h9rfgsQp_ksaj5VZt1v267MEcJHCUBApGxeQpwzGbQbsfI_9cqBygASSgT4O48GVQj1suec7aetbGUjskSBwTbqJKhxDNkRaK9Qhf_toJ-U0hmxZ0Fi1QSh6z9xe1ZdWo0eUxzz6rBAeg=w400');
-  background-repeat:no-repeat,no-repeat;
-  background-position:center,center;
-  background-size:contain,contain;
+  height:clamp(40px,4.2vw,56px);
+  width:auto;
+  max-width:170px;
+  object-fit:contain;
 }
 .nav-links{display:flex;gap:32px;list-style:none}
 .nav-links a{font-size:0.875rem;font-weight:500;letter-spacing:0.04em;color:rgba(240,235,226,0.78);transition:color 0.2s}
@@ -185,7 +183,7 @@ nav.scrolled{
 }
 .hero-logo img{
   display:block;
-  height:clamp(30px,3.4vw,42px);
+  height:clamp(44px,5vw,64px);
   width:auto;
   max-width:min(46vw,240px);
   object-fit:contain;
@@ -199,26 +197,14 @@ nav.scrolled{
   color:var(--white);
   line-height:1;
 }
-.hero-logo-mark{
-  display:block;
-  width:min(46vw,240px);
-  height:clamp(30px,3.4vw,42px);
-  background-image:url('https://images.patiotuerca.com/thumbs/s/1045x290/amz_ptf_ecuador/dealers/378/principal.jpg');
-  background-repeat:no-repeat;
-  background-position:center;
-  background-size:contain;
-  filter:drop-shadow(0 1px 4px rgba(0,0,0,0.35));
-}
 .hero-logo:hover{transform:translateY(-1px)}
 @media(max-width:900px){
   .hero-logo{top:82px;left:22px;padding:8px 12px;}
   .hero-logo img{height:30px;max-width:170px;}
-  .hero-logo-mark{height:30px;max-width:170px;width:170px;}
 }
 @media(max-width:600px){
   .hero-logo{top:72px;left:18px;padding:8px 10px;}
   .hero-logo img{height:28px;max-width:150px;}
-  .hero-logo-mark{height:28px;max-width:150px;width:150px;}
 }
 .hero-badge{
   display:inline-block;background:rgba(200,184,154,0.15);color:var(--beige);
@@ -520,19 +506,7 @@ footer{
   max-width:1280px;margin:0 auto;
   display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
 }
-.footer-logo img{height:36px;object-fit:contain;opacity:0.85}
-.footer-logo-mark{
-  display:block;
-  width:155px;
-  height:36px;
-  opacity:0.85;
-  background-image:
-    url('https://images.patiotuerca.com/thumbs/s/1045x290/amz_ptf_ecuador/dealers/378/principal.jpg'),
-    url('https://lh3.googleusercontent.com/sitesv/AA5AbUD1XzyVON421qqTAUhPR0h9rfgsQp_ksaj5VZt1v267MEcJHCUBApGxeQpwzGbQbsfI_9cqBygASSgT4O48GVQj1suec7aetbGUjskSBwTbqJKhxDNkRaK9Qhf_toJ-U0hmxZ0Fi1QSh6z9xe1ZdWo0eUxzz6rBAeg=w400');
-  background-repeat:no-repeat,no-repeat;
-  background-position:center,center;
-  background-size:contain,contain;
-}
+.footer-logo img{height:40px;width:auto;max-width:155px;object-fit:contain;opacity:0.85}
 .footer-links{display:flex;gap:28px}
 .footer-links a{font-size:0.82rem;color:var(--gray);transition:color 0.2s}
 .footer-links a:hover{color:var(--beige)}
@@ -584,7 +558,14 @@ footer{
   .sticky-wa-text{display:none}
 }
 @media(max-width:600px){
+  .hero{height:auto;min-height:auto;align-items:flex-start;padding:120px 0 52px}
+  .hero-content{padding:0 18px;max-width:100%}
   .hero-title{font-size:2rem}
+  .hero-actions{flex-direction:column;align-items:stretch;gap:12px}
+  .hero-actions .btn-primary,
+  .hero-actions .btn-ghost{width:100%;display:inline-flex;justify-content:center}
+  .hero-stats{position:static;margin-top:24px;flex-direction:column;align-items:flex-start;gap:14px}
+  .hero-stat{text-align:left}
   .nosotros-inner{grid-template-columns:1fr}
   .nosotros-img{height:300px}
   .scroll-hint{display:none}
@@ -603,7 +584,7 @@ footer{
 <!-- NAV -->
 <nav id="main-nav">
   <a href="#" class="nav-logo">
-    <span class="nav-logo-mark" role="img" aria-label="Q2 Saloon Logo"></span>
+    <img src="https://raw.githubusercontent.com/infooxbarec-star/pruebaq2saloon/refs/heads/main/logo.png" alt="Q2 Saloon Logo" class="nav-logo-img"/>
   </a>
   <ul class="nav-links">
     <li><a href="#featured">Destacados</a></li>
@@ -629,7 +610,7 @@ footer{
   <button class="mobile-menu-close" id="mob-close">×</button>
   <a href="#featured" onclick="closeMob()">Destacados</a>
   <a href="#inventario" onclick="closeMob()">Inventario</a>
-  <a href="#trust" onclick="closeMob()">Confianza Q2</a>
+  <a href="#trust" onclick="closeMob()">Confianza Q2 Saloon</a>
   <a href="#nosotros" onclick="closeMob()">Nosotros</a>
   <a href="#contacto" onclick="closeMob()">Contacto</a>
 </div>
@@ -658,7 +639,7 @@ footer{
     <img class="hero-bg" src="https://lh3.googleusercontent.com/sitesv/AA5AbUDA6pobrYNROht_yKAv60AB0IbHdi2uXfi7wWBoOTAgivSeljkts6UfXFBd4s69Chik8uDJWxpx8Whgl7eM9v0vCuDI2CKd_AtFbIj85-2KpK_iP8udqBj0ALQyHbPWhohN7ZCCr6Dm8n-Pi_7d44AiuGRbnWMkbFA=w1920" alt="Q2 Saloon" onerror="this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80'"/>
   </div>
   <div class="hero-logo">
-    <span class="hero-logo-mark" role="img" aria-label="Q2 Saloon Logo"></span>
+    <img src="https://raw.githubusercontent.com/infooxbarec-star/pruebaq2saloon/refs/heads/main/logo.png" alt="Q2 Saloon Logo"/>
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -787,7 +768,7 @@ footer{
   <div class="container">
     <div class="section-head reveal" style="text-align:center">
       <div class="section-label">Por qué elegirnos</div>
-      <h2 class="section-title">Confianza Q2</h2>
+      <h2 class="section-title">Confianza Q2 Saloon</h2>
       <p class="section-sub" style="margin:12px auto 0">Cada vehículo pasa por un proceso riguroso antes de llegar a ti.</p>
     </div>
     <div class="trust-grid">
@@ -943,12 +924,12 @@ footer{
 <footer>
   <div class="footer-inner">
     <a href="#" class="footer-logo">
-      <span class="footer-logo-mark" role="img" aria-label="Q2 Saloon Logo"></span>
+      <img src="https://raw.githubusercontent.com/infooxbarec-star/pruebaq2saloon/refs/heads/main/logo.png" alt="Q2 Saloon Logo"/>
     </a>
     <div class="footer-links">
       <a href="#featured">Destacados</a>
       <a href="#inventario">Inventario</a>
-      <a href="#trust">Confianza Q2</a>
+      <a href="#trust">Confianza Q2 Saloon</a>
       <a href="#contacto">Contacto</a>
     </div>
     <div class="footer-social">
