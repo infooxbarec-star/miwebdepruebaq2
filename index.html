@@ -170,7 +170,7 @@ nav.scrolled{
   background:linear-gradient(to top,rgba(7,16,30,0.95) 0%,rgba(7,16,30,0.5) 50%,rgba(7,16,30,0.18) 100%);
 }
 .hero-content{
-  position:relative;z-index:1;max-width:780px;padding:0 40px;
+  position:relative;z-index:1;width:100%;max-width:1280px;padding:0 40px;
 }
 .hero-logo{
   position:absolute;top:88px;left:40px;z-index:3;display:inline-flex;align-items:center;justify-content:center;
@@ -227,6 +227,19 @@ nav.scrolled{
   display:flex;gap:14px;flex-wrap:wrap;
   animation:heroUp 0.9s var(--ease) 1.05s both;
 }
+.hero-bottom-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:32px;
+  margin-top:4px;
+}
+.hero-actions-group{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
 @keyframes heroUp{
   from{opacity:0;transform:translateY(22px)}
   to{opacity:1;transform:translateY(0)}
@@ -244,11 +257,11 @@ nav.scrolled{
 }
 .btn-ghost:hover{border-color:var(--beige);background:rgba(200,184,154,0.08)}
 .hero-stats{
-  position:absolute;bottom:30px;right:40px;z-index:1;
-  display:flex;gap:40px;
+  position:static;z-index:1;
+  display:flex;align-items:center;gap:40px;
   animation:heroUp 0.9s var(--ease) 1.3s both;
 }
-.hero-stat{text-align:right}
+.hero-stat{display:flex;flex-direction:column;align-items:center;text-align:center}
 .hero-stat-num{font-size:1.8rem;font-weight:800;color:var(--beige);line-height:1}
 .hero-stat-label{font-size:0.72rem;color:var(--gray-l);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
 .scroll-hint{
@@ -546,7 +559,8 @@ footer{
   .hamburger{display:flex}
   section{padding:70px 20px}
   .hero-content{padding:0 20px}
-  .hero-stats{right:20px;gap:24px}
+  .hero-bottom-row{gap:24px}
+  .hero-stats{gap:24px}
   .hero-stat-num{font-size:1.4rem}
   .nosotros-inner{grid-template-columns:1fr}
   .nosotros-img{height:280px}
@@ -561,11 +575,15 @@ footer{
   .hero{height:auto;min-height:auto;align-items:flex-start;padding:120px 0 52px}
   .hero-content{padding:0 18px;max-width:100%}
   .hero-title{font-size:2rem}
-  .hero-actions{flex-direction:column;align-items:stretch;gap:12px}
+  .hero-bottom-row{flex-direction:column;align-items:stretch;gap:24px;margin-top:0}
+  .hero-actions-group{flex-direction:column;align-items:stretch;gap:12px}
+  .hero-actions{width:100%;flex-direction:column;align-items:stretch;gap:12px}
   .hero-actions .btn-primary,
-  .hero-actions .btn-ghost{width:100%;display:inline-flex;justify-content:center}
-  .hero-stats{position:static;margin-top:24px;flex-direction:column;align-items:flex-start;gap:14px}
-  .hero-stat{text-align:left}
+  .hero-actions .btn-ghost,
+  .hero-actions-group .btn-primary,
+  .hero-actions-group .btn-ghost{width:100%;display:inline-flex;justify-content:center}
+  .hero-stats{margin-top:0;justify-content:flex-start;flex-direction:column;align-items:flex-start;gap:14px}
+  .hero-stat{align-items:flex-start;text-align:left}
   .nosotros-inner{grid-template-columns:1fr}
   .nosotros-img{height:300px}
   .scroll-hint{display:none}
@@ -646,22 +664,26 @@ footer{
     <span class="hero-badge">Quito, Ecuador · Desde 2015</span>
     <h1 class="hero-title">Vehículos seleccionados.<br/><em>Calidad Premium.</em></h1>
     <p class="hero-sub">Experiencia personalizada en la compra de tu próximo automóvil premium. Cada vehículo verificado, documentado y listo para ti.</p>
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="document.getElementById('inventario').scrollIntoView({behavior:'smooth'})">Ver inventario</button>
-      <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20asesor%C3%ADa%20personalizada" target="_blank" class="btn-ghost">Asesoría gratuita</a>
-    </div>
-    <div class="hero-stats reveal">
-      <div class="hero-stat">
-        <div class="hero-stat-num" id="stat1">0+</div>
-        <div class="hero-stat-label">Vehículos</div>
+    <div class="hero-bottom-row">
+      <div class="hero-actions-group">
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="document.getElementById('inventario').scrollIntoView({behavior:'smooth'})">Ver inventario</button>
+          <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20asesor%C3%ADa%20personalizada" target="_blank" class="btn-ghost">Asesoría gratuita</a>
+        </div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num" id="stat2">0+</div>
-        <div class="hero-stat-label">Años</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num" id="stat3">0+</div>
-        <div class="hero-stat-label">Clientes</div>
+      <div class="hero-stats reveal">
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="stat1">0+</div>
+          <div class="hero-stat-label">Vehículos</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="stat2">0+</div>
+          <div class="hero-stat-label">Años</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="stat3">0+</div>
+          <div class="hero-stat-label">Clientes</div>
+        </div>
       </div>
     </div>
   </div>
