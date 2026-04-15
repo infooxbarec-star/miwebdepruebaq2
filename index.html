@@ -1130,21 +1130,17 @@ function closeMob(){
 /* ─── COUNTER ANIMATION ─── */
 function animCounter(el,target,suffix='',dur=1150){
   let start=null;
-  let last=-1;
   const step=ts=>{
     if(start===null) start=ts;
     const p=Math.min((ts-start)/dur,1);
-    const eased=1-Math.pow(1-p,4);
-    const value=Math.min(target,Math.round(eased*target));
-    if(value!==last){
-      el.textContent=value+suffix;
-      last=value;
-    }
+    const eased=p<0.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
+    const value=Math.min(target,Math.floor(eased*target));
+    el.textContent=value+suffix;
     if(p<1){
       requestAnimationFrame(step);
       return;
     }
-    if(last!==target) el.textContent=target+suffix;
+    el.textContent=target+suffix;
   };
   requestAnimationFrame(step);
 }
@@ -1163,9 +1159,9 @@ const counterObs=new IntersectionObserver(entries=>{
     if(e.isIntersecting&&!countersStarted){
       countersStarted=true;
       e.target.classList.add('revealed');
-      animCounter(document.getElementById('stat1'),200,'+',1120);
-      animCounter(document.getElementById('stat2'),10,'+',1020);
-      animCounter(document.getElementById('stat3'),500,'+',1240);
+      animCounter(document.getElementById('stat1'),200,'+',1010);
+      animCounter(document.getElementById('stat2'),10,'+',920);
+      animCounter(document.getElementById('stat3'),500,'+',1130);
       counterObs.unobserve(e.target);
     }
   });
