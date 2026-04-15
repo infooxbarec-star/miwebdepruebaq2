@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Q2 Saloon — Vehículos para cada Camino | Quito Ecuador</title>
+<title>Q2 Saloon — Encuentra el auto de tus sueños| Quito Ecuador</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap" rel="stylesheet"/>
@@ -431,8 +431,26 @@ section{padding:100px 40px}
 /* ─── NOSOTROS ─── */
 #nosotros{background:var(--surface);border-top:1px solid var(--line)}
 .nosotros-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.nosotros-img{border-radius:var(--radius-lg);overflow:hidden;height:460px}
-.nosotros-img img{width:100%;height:100%;object-fit:cover}
+.nosotros-img{
+  position:relative;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  height:460px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.35),0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.nosotros-img::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,rgba(7,16,30,0.06) 10%,rgba(7,16,30,0.30) 100%);
+}
+.nosotros-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
 .nosotros-text .section-label{display:block}
 .nosotros-list{margin-top:28px;display:flex;flex-direction:column;gap:16px}
 .nosotros-item{display:flex;gap:14px;align-items:flex-start}
@@ -567,8 +585,8 @@ footer{
 }
 @media(max-width:600px){
   .hero-title{font-size:2rem}
-  .hero-stats{position:relative;bottom:auto;right:auto;flex-direction:row;justify-content:flex-start;margin-top:28px;gap:28px}
-  .hero{align-items:flex-end;padding-bottom:40px}
+  .nosotros-inner{grid-template-columns:1fr}
+  .nosotros-img{height:300px}
   .scroll-hint{display:none}
   .contact-wa-hero{padding:32px 20px}
   .contact-wa-btns{flex-direction:column;align-items:center}
@@ -812,7 +830,7 @@ footer{
   <div class="container">
     <div class="nosotros-inner">
       <div class="nosotros-img reveal-left">
-        <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUDA6pobrYNROht_yKAv60AB0IbHdi2uXfi7wWBoOTAgivSeljkts6UfXFBd4s69Chik8uDJWxpx8Whgl7eM9v0vCuDI2CKd_AtFbIj85-2KpK_iP8udqBj0ALQyHbPWhohN7ZCCr6Dm8n-Pi_7d44AiuGRbnWMkbFA=w1920" alt="Q2 Saloon showroom" onerror="this.src='https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=900&q=80'"/>
+          <img src="https://baanvelgen.com/cdn/shop/files/novitec-carbon-front-spoiler-frontview-ferrari-296.jpg?v=1762525319&width=1460" alt="Q2 Saloon showroom" onerror="this.src='https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=900&q=80'"/>
       </div>
       <div class="nosotros-text reveal-right">
         <span class="section-label">Quiénes somos</span>
@@ -952,24 +970,24 @@ const VEHICLES = [
   {id:2, brand:'Toyota', model:'Sequoia Platinum', year:2019, price:85000, mileage:26220, mileageUnit:'mi', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://toyotacanada.scene7.com/is/image/toyotacanada/2019_Toyota_Sequoia-1?ts=1688746476245&$Media-Large$&dpr=off'},
   {id:3, brand:'BMW', model:'X6 M Competition', year:2022, price:177000, mileage:17360, mileageUnit:'mi', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://hips.hearstapps.com/hmg-prod/images/2020-bmw-x6-m-competition-103-1569964622.jpg?crop=0.867xw:0.651xh;0.0112xw,0.281xh&resize=1200:*'},
   {id:4, brand:'Mercedes-Benz', model:'G63 AMG', year:2017, price:195990, mileage:64147, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://images.cdn.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/merc-g63-amg-2_0_0.jpg?itok=kHnI7ZVW'},
-  {id:5, brand:'BMW', model:'320i', year:2020, price:35500, mileage:88687, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1607853202273-797f1c22a38e?auto=format&fit=crop&w=900&q=80'},
-  {id:6, brand:'Land Rover', model:'Range Rover Autobiography', year:2015, price:79990, mileage:74637, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?auto=format&fit=crop&w=900&q=80'},
-  {id:7, brand:'Jeep', model:'Grand Cherokee Limited', year:2023, price:76999, mileage:55999, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1571987502227-7f5063b33cbe?auto=format&fit=crop&w=900&q=80'},
-  {id:8, brand:'Jeep', model:'Grand Cherokee Limited', year:2021, price:47900, mileage:62150, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=900&q=80'},
-  {id:9, brand:'Land Rover', model:'Range Rover', year:2014, price:83000, mileage:60847, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1584345604476-8ec5f82d718b?auto=format&fit=crop&w=900&q=80'},
-  {id:10, brand:'Mercedes-Benz', model:'A 200', year:2020, price:29900, mileage:82235, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=80'},
-  {id:11, brand:'Toyota', model:'Land Cruiser 200', year:2013, price:65500, mileage:166891, mileageUnit:'km', transmission:'Automático', fuel:'Diésel', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=900&q=80'},
+  {id:5, brand:'BMW', model:'320i', year:2020, price:35500, mileage:88687, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://cdn.motor1.com/images/mgl/4oVxq/s1/bmw-3er-2019-modell-m-sport.webp'},
+  {id:6, brand:'Land Rover', model:'Range Rover Autobiography', year:2015, price:79990, mileage:74637, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://us-west-2.graphassets.com/ALxjZdtQIQOudrzeO6hSgz/sPBeIOSaGeIZzsZbRGHA'},
+  {id:7, brand:'Jeep', model:'Grand Cherokee Limited', year:2023, price:76999, mileage:55999, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://media.ed.edmunds-media.com/jeep/grand-cherokee-l/2022/oem/2022_jeep_grand-cherokee-l_4dr-suv_limited_fq_oem_1_1600.jpg'},
+  {id:8, brand:'Jeep', model:'Grand Cherokee Limited', year:2021, price:47900, mileage:62150, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://media.ed.edmunds-media.com/jeep/grand-cherokee/2021/oem/2021_jeep_grand-cherokee_4dr-suv_80th_fq_oem_1_1600.jpg'},
+  {id:9, brand:'Land Rover', model:'Range Rover', year:2014, price:83000, mileage:60847, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://static0.pocketlintimages.com/wordpress/wp-content/uploads/120220-cars-news-2014-range-rover-sport-unveiled-with-lighter-look-new-tech-inside-image1-rwqeh3bYB4.jpg'},
+  {id:10, brand:'Mercedes-Benz', model:'A 200', year:2020, price:29900, mileage:82235, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://cms.groupeditors.com/img/autodealer/3823_1.jpg?w=&scale=both&quality=100'},
+  {id:11, brand:'Toyota', model:'Land Cruiser 200', year:2013, price:65500, mileage:166891, mileageUnit:'km', transmission:'Automático', fuel:'Diésel', location:'Quito', type:'vehiculo', featured:false, img:'https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/d9b636c2ec84ddc3bc7f2eb32861b39bdd5f9683/photos/3zqLyo8B-vi9g9j1Ezk-(edit).jpg?t=170887991650'},
   {id:12, brand:'Porsche', model:'Cayenne', year:2023, price:115990, mileage:28072, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://images.pistonheads.com/nimg/47209/mceu_73425740941684170469720.jpg'},
-  {id:13, brand:'BMW', model:'325i', year:1993, price:29900, mileage:40018, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=900&q=80'},
-  {id:14, brand:'Land Rover', model:'Range Rover Evoque', year:2026, price:75900, mileage:0, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=80'},
-  {id:15, brand:'Ford', model:'Ranger XL', year:2023, price:46499, mileage:13283, mileageUnit:'km', transmission:'Manual', fuel:'Diésel', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80'},
-  {id:16, brand:'Mercedes-Benz', model:'230GE', year:1985, price:58799, mileage:70000, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1622200984790-de53e3ded5ed?auto=format&fit=crop&w=900&q=80'},
-  {id:17, brand:'Mercedes-Benz', model:'GLC 43 Coupe', year:2019, price:75000, mileage:57485, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=900&q=80'},
-  {id:18, brand:'BMW', model:'X4 xDrive', year:2015, price:46800, mileage:58734, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=900&q=80'},
-  {id:19, brand:'Chevrolet', model:'Tahoe', year:2019, price:61990, mileage:78696, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1589750602846-60028779e6bd?auto=format&fit=crop&w=900&q=80'},
-  {id:20, brand:'Mercedes-Benz', model:'G63 AMG', year:2013, price:179000, mileage:26334, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1605816988069-b11383b50717?auto=format&fit=crop&w=900&q=80'},
-  {id:21, brand:'Honda', model:'CB650R', year:2022, price:11500, mileage:6200, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80'},
-  {id:22, brand:'Yamaha', model:'MT-07', year:2022, price:13200, mileage:4500, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=900&q=80'}
+  {id:13, brand:'BMW', model:'325i', year:1993, price:29900, mileage:40018, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.classic.com/vehicles/c5ed3ee24bd08e7fde31ec22ca8702bc2e660b6b.jpg?auto=format&fit=crop&w=600&h=384'},
+  {id:14, brand:'Land Rover', model:'Range Rover Evoque', year:2026, price:75900, mileage:0, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://hips.hearstapps.com/hmg-prod/images/2024-land-rover-range-rover-evoque-phev-108-65380163e375b.jpg?crop=0.611xw:0.611xh;0.0689xw,0.264xh&resize=1200:*'},
+  {id:15, brand:'Ford', model:'Ranger XL', year:2023, price:46499, mileage:13283, mileageUnit:'km', transmission:'Manual', fuel:'Diésel', location:'Quito', type:'vehiculo', featured:false, img:'https://img-ik.cars.co.za/news-site-za/images/2022/11/xlt.jpg?tr=w-1200,h-800'},
+  {id:16, brand:'Mercedes-Benz', model:'230GE', year:1985, price:58799, mileage:70000, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://bringatrailer.com/wp-content/uploads/2024/10/1985_mercedes-benz_230ge_IMG-4481-95835-scaled.jpg'},
+  {id:17, brand:'Mercedes-Benz', model:'GLC 43 Coupe', year:2019, price:75000, mileage:57485, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/body-image/public/90-mercedes-amg-glc43-coupe-2019-reveal-hero-rear.jpg?itok=7aoXfsGt'},
+  {id:18, brand:'BMW', model:'X4 xDrive', year:2015, price:46800, mileage:58734, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://media.ed.edmunds-media.com/bmw/x4/2015/oem/2015_bmw_x4_4dr-suv_xdrive35i_fq_oem_10_1600.jpg'},
+  {id:19, brand:'Chevrolet', model:'Tahoe', year:2019, price:61990, mileage:78696, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.jazelc.com/uploads/spmotors-m2e/2019-tahoe-gal-ext-07.jpg'},
+  {id:20, brand:'Mercedes-Benz', model:'G63 AMG', year:2013, price:179000, mileage:26334, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://hips.hearstapps.com/hmg-prod/amv-prod-cad-assets/images/13q2/510832/2013-mercedes-benz-g63-amg-test-review-car-and-driver-photo-491165-s-original.jpg?fill=1:1&resize=1200:*'},
+  {id:21, brand:'Honda', model:'CB650R', year:2022, price:11500, mileage:6200, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://www.eicma.it/wp-content/uploads/2023/08/658bafeda8934a6f90a00aecc6ec49df_honda-cb650r_02-5.jpg'},
+  {id:22, brand:'Yamaha', model:'MT-07', year:2022, price:13200, mileage:4500, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://images.hindustantimes.com/auto/img/2021/06/25/600x338/img_1624608448746_1624608459537.jpg'}
 ];
 
 /* ─── MODAL SCROLL LOCK ─── */
