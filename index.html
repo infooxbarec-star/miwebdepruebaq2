@@ -232,7 +232,7 @@ nav.scrolled{
   align-items:center;
   justify-content:space-between;
   gap:32px;
-  margin-top:4px;
+  margin-top:18px;
 }
 .hero-actions-group{
   display:flex;
@@ -264,13 +264,6 @@ nav.scrolled{
 .hero-stat{display:flex;flex-direction:column;align-items:center;text-align:center}
 .hero-stat-num{font-size:1.8rem;font-weight:800;color:var(--beige);line-height:1}
 .hero-stat-label{font-size:0.72rem;color:var(--gray-l);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
-.scroll-hint{
-  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:1;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  color:var(--gray);font-size:0.7rem;letter-spacing:0.1em;
-  animation:heroUp 0.9s var(--ease) 1.6s both;
-}
-.scroll-hint-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--beige),transparent)}
 
 /* ─── MARQUEE ─── */
 .marquee-strip{
@@ -586,7 +579,6 @@ footer{
   .hero-stat{align-items:flex-start;text-align:left}
   .nosotros-inner{grid-template-columns:1fr}
   .nosotros-img{height:300px}
-  .scroll-hint{display:none}
   .contact-wa-hero{padding:32px 20px}
   .contact-wa-btns{flex-direction:column;align-items:center}
 }
@@ -686,10 +678,6 @@ footer{
         </div>
       </div>
     </div>
-  </div>
-  <div class="scroll-hint">
-    <div class="scroll-hint-line"></div>
-    <span>SCROLL</span>
   </div>
 </section>
 
