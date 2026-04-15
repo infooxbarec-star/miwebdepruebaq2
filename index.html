@@ -221,11 +221,11 @@ nav.scrolled{
 .hero-sub{
   font-size:1.05rem;font-weight:300;color:var(--gray-l);max-width:520px;
   margin-bottom:32px;
-  animation:heroSlideIn 0.58s ease-out 0.12s both;
+  animation:heroSlideIn 0.52s ease-out 0.02s both;
 }
 .hero-actions{
   display:flex;gap:14px;flex-wrap:wrap;
-  animation:heroSlideIn 0.62s ease-out 0.24s both;
+  animation:heroSlideIn 0.54s ease-out 0.10s both;
 }
 .hero-sub,.hero-actions{will-change:transform,opacity}
 .hero-bottom-row{
@@ -246,8 +246,8 @@ nav.scrolled{
   to{opacity:1;transform:translateY(0)}
 }
 @keyframes heroSlideIn{
-  from{opacity:0;transform:translateX(-30px)}
-  to{opacity:1;transform:translateX(0)}
+  from{opacity:0;transform:translate3d(-18px,0,0)}
+  to{opacity:1;transform:translate3d(0,0,0)}
 }
 .btn-primary{
   background:var(--beige);color:var(--bg);font-weight:700;font-size:0.92rem;
@@ -586,6 +586,9 @@ footer{
   .nosotros-img{height:300px}
   .contact-wa-hero{padding:32px 20px}
   .contact-wa-btns{flex-direction:column;align-items:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-sub,.hero-actions{animation:none!important;opacity:1;transform:none}
 }
 </style>
 </head>
