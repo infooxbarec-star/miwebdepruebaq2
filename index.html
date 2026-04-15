@@ -1,1537 +1,1169 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>Q2 Saloon — Vehículos Premium | Quito Ecuador</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap" rel="stylesheet"/>
-    <style>
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        :root{
-            --bg:#07101e;
-            --surface:#0b1729;
-            --card:#0e1d33;
-            --card2:#121f38;
-            --line:rgba(200,184,154,0.1);
-            --line-h:rgba(200,184,154,0.28);
-            --beige:#c8b89a;
-            --beige-d:#a89070;
-            --beige-l:#dfd0b4;
-            --white:#f0ebe2;
-            --gray-l:#8fa5c4;
-            --gray:#506480;
-            --green:#25D366;
-            --radius:12px;
-            --radius-lg:22px;
-            --ease:cubic-bezier(0.22,1,0.36,1);
-        }
-        html{scroll-behavior:smooth;font-size:16px}
-        body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-optical-sizing:auto;overflow-x:hidden;line-height:1.6}
-        a{color:inherit;text-decoration:none}
-        img{display:block;max-width:100%}
-        button{cursor:pointer;font-family:inherit}
-        /* ─── SCROLLBAR ─── */
-        ::-webkit-scrollbar{width:6px}
-        ::-webkit-scrollbar-track{background:var(--bg)}
-        ::-webkit-scrollbar-thumb{background:var(--beige-d);border-radius:3px}
-        /* ─── FLOATING WA ─── */
-        .wa-float{
-            position:fixed;bottom:28px;right:28px;z-index:9000;
-            width:56px;height:56px;border-radius:50%;
-            background:var(--green);display:flex;align-items:center;justify-content:center;
-            box-shadow:0 4px 24px rgba(37,211,102,0.45);transition:transform 0.3s var(--ease),box-shadow 0.3s;
-        }
-        .wa-float:hover{transform:scale(1.12);box-shadow:0 6px 32px rgba(37,211,102,0.6)}
-        .wa-float svg{width:28px;height:28px;fill:#fff}
-        /* ─── NAV ─── */
-        nav{
-            position:fixed;top:0;left:0;right:0;z-index:8000;
-            display:flex;align-items:center;justify-content:space-between;
-            padding:0 40px;height:68px;
-            transition:background 0.4s,backdrop-filter 0.4s,border-bottom 0.4s;
-        }
-        nav.scrolled{
-            background:rgba(7,16,30,0.88);backdrop-filter:blur(18px);
-            border-bottom:1px solid var(--line);
-        }
-        .nav-logo img{height:40px;object-fit:contain}
-        .nav-links{display:flex;gap:32px;list-style:none}
-        .nav-links a{font-size:0.875rem;font-weight:500;letter-spacing:0.04em;color:rgba(240,235,226,0.78);transition:color 0.2s}
-        .nav-links a:hover{color:var(--beige)}
-        .nav-right{display:flex;align-items:center;gap:16px}
-        .nav-wa{
-            display:flex;align-items:center;gap:8px;
-            background:var(--green);color:#fff;font-size:0.82rem;font-weight:600;
-            padding:8px 16px;border-radius:99px;transition:opacity 0.2s;
-        }
-        .nav-wa:hover{opacity:0.88}
-        .nav-wa svg{width:16px;height:16px;fill:#fff}
-        .nav-cta{
-            background:transparent;border:1px solid var(--beige);color:var(--beige);
-            font-size:0.82rem;font-weight:500;padding:8px 18px;border-radius:99px;
-            transition:background 0.2s,color 0.2s;
-        }
-        .nav-cta:hover{background:var(--beige);color:var(--bg)}
-        .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
-        .hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:0.3s}
-        /* ─── MOBILE MENU ─── */
-        .mobile-menu{
-            display:none;position:fixed;inset:0;z-index:7900;
-            background:rgba(7,16,30,0.97);backdrop-filter:blur(20px);
-            flex-direction:column;align-items:center;justify-content:center;gap:32px;
-        }
-        .mobile-menu.open{display:flex}
-        .mobile-menu a{font-size:1.5rem;font-weight:300;color:var(--white);letter-spacing:0.06em}
-        .mobile-menu a:hover{color:var(--beige)}
-        .mobile-menu-close{
-            position:absolute;top:24px;right:28px;background:none;border:none;
-            color:var(--white);font-size:2rem;line-height:1;
-        }
-        /* ─── MODAL ─── */
-        .modal-ov{
-            position:fixed;inset:0;z-index:9500;
-            background:rgba(7,16,30,0.92);backdrop-filter:blur(12px);
-            display:none;align-items:center;justify-content:center;padding:20px;
-        }
-        .modal-ov.open{display:flex}
-        .modal-box{
-            background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
-            max-width:860px;width:100%;max-height:92vh;overflow-y:auto;position:relative;
-        }
-        .modal-close{
-            position:sticky;top:12px;left:100%;margin-right:16px;
-            background:rgba(255,255,255,0.08);border:none;color:var(--white);
-            width:36px;height:36px;border-radius:50%;font-size:1.2rem;
-            display:flex;align-items:center;justify-content:center;
-            transition:background 0.2s;z-index:1;
-        }
-        .modal-close:hover{background:rgba(255,255,255,0.15)}
-        .modal-img{width:100%;height:340px;object-fit:cover;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
-        .modal-body{padding:32px}
-        .modal-badge{
-            display:inline-block;background:rgba(200,184,154,0.12);color:var(--beige);
-            font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
-            padding:4px 12px;border-radius:99px;margin-bottom:12px;
-        }
-        .modal-title{font-size:1.8rem;font-weight:700;margin-bottom:6px}
-        .modal-price{font-size:2rem;font-weight:800;color:var(--beige);margin-bottom:24px}
-        .modal-specs{
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;
-            margin-bottom:28px;
-        }
-        .modal-spec{background:var(--card);border-radius:var(--radius);padding:14px 16px}
-        .modal-spec-label{font-size:0.72rem;color:var(--gray-l);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
-        .modal-spec-val{font-size:0.95rem;font-weight:600}
-        .modal-wa{
-            display:flex;align-items:center;justify-content:center;gap:10px;
-            background:var(--green);color:#fff;font-size:1rem;font-weight:700;
-            width:100%;padding:16px;border-radius:var(--radius);border:none;
-            transition:opacity 0.2s;
-        }
-        .modal-wa:hover{opacity:0.88}
-        .modal-wa svg{width:22px;height:22px;fill:#fff}
-        /* ─── HERO ─── */
-        .hero{
-            position:relative;height:100vh;min-height:640px;
-            display:flex;align-items:flex-end;padding-bottom:80px;overflow:hidden;
-        }
-        .hero-bg-wrap{
-            position:absolute;inset:0;overflow:hidden;
-        }
-        .hero-bg{
-            width:100%;height:100%;object-fit:cover;object-position:center;
-            animation:kenBurns 18s ease-in-out infinite alternate;transform-origin:center center;
-        }
-        @keyframes kenBurns{
-            0%{transform:scale(1.06) translate(0%,0%)}
-            100%{transform:scale(1.0) translate(-1%,-0.5%)}
-        }
-        .hero-overlay{
-            position:absolute;inset:0;
-            background:linear-gradient(to top,rgba(7,16,30,0.95) 0%,rgba(7,16,30,0.5) 50%,rgba(7,16,30,0.18) 100%);
-        }
-        .hero-content{
-            position:relative;z-index:1;max-width:780px;padding:0 40px;
-        }
-        .hero-badge{
-            display:inline-block;background:rgba(200,184,154,0.15);color:var(--beige);
-            font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
-            padding:6px 16px;border-radius:99px;margin-bottom:20px;border:1px solid var(--line-h);
-            animation:heroUp 0.9s var(--ease) 0.2s both;
-        }
-        .hero-title{
-            font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:800;line-height:1.08;
-            letter-spacing:-0.02em;margin-bottom:18px;
-            animation:heroUp 0.9s var(--ease) 0.5s both;
-        }
-        .hero-title em{font-style:normal;color:var(--beige)}
-        .hero-sub{
-            font-size:1.05rem;font-weight:300;color:var(--gray-l);max-width:520px;
-            margin-bottom:32px;
-            animation:heroUp 0.9s var(--ease) 0.8s both;
-        }
-        .hero-actions{
-            display:flex;gap:14px;flex-wrap:wrap;
-            animation:heroUp 0.9s var(--ease) 1.05s both;
-        }
-        @keyframes heroUp{
-            from{opacity:0;transform:translateY(22px)}
-            to{opacity:1;transform:translateY(0)}
-        }
-        .btn-primary{
-            background:var(--beige);color:var(--bg);font-weight:700;font-size:0.92rem;
-            padding:14px 28px;border-radius:99px;border:none;
-            transition:background 0.2s,transform 0.2s;letter-spacing:0.02em;
-        }
-        .btn-primary:hover{background:var(--beige-l);transform:translateY(-1px)}
-        .btn-ghost{
-            background:transparent;border:1px solid rgba(240,235,226,0.35);color:var(--white);
-            font-size:0.92rem;font-weight:500;padding:14px 28px;border-radius:99px;
-            transition:border-color 0.2s,background 0.2s;
-        }
-        .btn-ghost:hover{border-color:var(--beige);background:rgba(200,184,154,0.08)}
-        .hero-stats{
-            position:absolute;bottom:30px;right:40px;z-index:1;
-            display:flex;gap:40px;
-            animation:heroUp 0.9s var(--ease) 1.3s both;
-        }
-        .hero-stat{text-align:right}
-        .hero-stat-num{font-size:1.8rem;font-weight:800;color:var(--beige);line-height:1}
-        .hero-stat-label{font-size:0.72rem;color:var(--gray-l);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
-        .scroll-hint{
-            position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:1;
-            display:flex;flex-direction:column;align-items:center;gap:6px;
-            color:var(--gray);font-size:0.7rem;letter-spacing:0.1em;
-            animation:heroUp 0.9s var(--ease) 1.6s both;
-        }
-        .scroll-hint-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--beige),transparent)}
-        /* ─── MARQUEE ─── */
-        .marquee-strip{
-            background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-            padding:16px 0;overflow:hidden;
-        }
-        .marquee-track{
-            display:flex;gap:48px;width:max-content;
-            animation:marquee 22s linear infinite;
-        }
-        .marquee-track:hover{animation-play-state:paused}
-        @keyframes marquee{
-            0%{transform:translateX(0)}
-            100%{transform:translateX(-50%)}
-        }
-        .marquee-item{font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);white-space:nowrap}
-        .marquee-sep{color:var(--beige);opacity:0.4}
-        /* ─── STICKY WA BAR ─── */
-        .sticky-wa{
-            position:fixed;bottom:0;left:0;right:0;z-index:7800;
-            background:rgba(7,16,30,0.95);backdrop-filter:blur(12px);
-            border-top:1px solid var(--line);
-            padding:14px 40px;
-            display:flex;align-items:center;justify-content:space-between;gap:16px;
-            transform:translateY(100%);transition:transform 0.5s var(--ease);
-        }
-        .sticky-wa.show{transform:translateY(0)}
-        .sticky-wa-text{font-size:0.9rem;color:var(--gray-l)}
-        .sticky-wa-text strong{color:var(--white)}
-        .sticky-wa-btns{display:flex;gap:10px}
-        .sticky-wa-btn{
-            display:flex;align-items:center;gap:8px;
-            background:var(--green);color:#fff;font-size:0.82rem;font-weight:700;
-            padding:10px 18px;border-radius:99px;border:none;white-space:nowrap;
-            transition:opacity 0.2s;
-        }
-        .sticky-wa-btn:hover{opacity:0.88}
-        .sticky-wa-btn svg{width:16px;height:16px;fill:#fff}
-        /* ─── SECTIONS ─── */
-        section{padding:100px 40px}
-        .section-label{
-            font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
-            color:var(--beige);margin-bottom:12px;
-        }
-        .section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;line-height:1.12;letter-spacing:-0.02em}
-        .section-sub{font-size:1rem;color:var(--gray-l);margin-top:12px;max-width:540px}
-        .section-head{margin-bottom:56px}
-        .container{max-width:1280px;margin:0 auto}
-        /* ─── VEHICLE CARD ─── */
-        .vcard{
-            background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
-            overflow:hidden;cursor:pointer;transition:transform 0.3s var(--ease),box-shadow 0.3s,border-color 0.3s;
-        }
-        .vcard:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.5);border-color:var(--line-h)}
-        .vcard-img-wrap{position:relative;height:220px;overflow:hidden}
-        .vcard-img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s var(--ease)}
-        .vcard:hover .vcard-img{transform:scale(1.05)}
-        .vcard-badge{
-            position:absolute;top:12px;left:12px;
-            background:rgba(7,16,30,0.78);backdrop-filter:blur(6px);
-            color:var(--beige);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
-            padding:4px 10px;border-radius:99px;border:1px solid var(--line-h);
-        }
-        .vcard-feat-tag{
-            position:absolute;top:12px;right:12px;
-            background:var(--beige);color:var(--bg);
-            font-size:0.65rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
-            padding:4px 10px;border-radius:99px;
-        }
-        .vcard-body{padding:20px}
-        .vcard-brand{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-l);margin-bottom:4px}
-        .vcard-model{font-size:1.1rem;font-weight:700;margin-bottom:4px;line-height:1.2}
-        .vcard-year{font-size:0.82rem;color:var(--gray);margin-bottom:14px}
-        .vcard-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-        .vcard-meta span{
-            font-size:0.72rem;color:var(--gray-l);
-            background:rgba(255,255,255,0.04);padding:3px 8px;border-radius:6px;
-        }
-        .vcard-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:14px}
-        .vcard-price-label{font-size:0.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em}
-        .vcard-price{font-size:1.25rem;font-weight:800;color:var(--beige)}
-        .vcard-wa{
-            display:flex;align-items:center;gap:6px;
-            background:var(--green);color:#fff;font-size:0.75rem;font-weight:700;
-            padding:8px 14px;border-radius:99px;border:none;
-            transition:opacity 0.2s;flex-shrink:0;
-        }
-        .vcard-wa:hover{opacity:0.88}
-        .vcard-wa svg{width:14px;height:14px;fill:#fff}
-        /* ─── FEATURED SECTION ─── */
-        #featured{background:var(--surface);border-top:1px solid var(--line)}
-        .featured-grid{
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;
-        }
-        /* ─── FILTERS ─── */
-        .filters{
-            display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;
-            padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
-        }
-        .filter-select{
-            background:var(--card);border:1px solid var(--line);color:var(--white);
-            font-family:inherit;font-size:0.85rem;padding:10px 16px;border-radius:var(--radius);
-            flex:1;min-width:160px;appearance:none;
-            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238fa5c4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat:no-repeat;background-position:right 12px center;
-            padding-right:36px;cursor:pointer;transition:border-color 0.2s;
-        }
-        .filter-select:focus{outline:none;border-color:var(--beige)}
-        .inventory-grid{
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;
-        }
-        .no-results{
-            grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gray);
-        }
-        .no-results h3{font-size:1.2rem;margin-bottom:8px;color:var(--white)}
-        /* ─── TRUST SECTION ─── */
-        #trust{background:linear-gradient(135deg,var(--surface) 0%,var(--bg) 100%);border-top:1px solid var(--line)}
-        .trust-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
-        .trust-card{background:var(--surface);padding:48px 36px;transition:background 0.3s}
-        .trust-card:hover{background:var(--card)}
-        .trust-icon{font-size:2.4rem;margin-bottom:20px}
-        .trust-title{font-size:1.2rem;font-weight:700;margin-bottom:10px}
-        .trust-desc{font-size:0.9rem;color:var(--gray-l);line-height:1.65}
-        /* ─── VIDEO SECTION ─── */
-        #video{
-            position:relative;padding:0;height:520px;
-            display:flex;align-items:center;justify-content:center;overflow:hidden;
-            background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-        }
-        .video-bg{
-            position:absolute;inset:0;
-            background:url('https://lh3.googleusercontent.com/sitesv/AA5AbUDA6pobrYNROht_yKAv60AB0IbHdi2uXfi7wWBoOTAgivSeljkts6UfXFBd4s69Chik8uDJWxpx8Whgl7eM9v0vCuDI2CKd_AtFbIj85-2KpK_iP8udqBj0ALQyHbPWhohN7ZCCr6Dm8n-Pi_7d44AiuGRbnWMkbFA=w1920') center/cover no-repeat;
-            filter:brightness(0.25);
-        }
-        .video-content{position:relative;z-index:1;text-align:center;padding:40px}
-        .video-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:16px;letter-spacing:-0.02em}
-        .video-sub{font-size:1rem;color:var(--gray-l);margin-bottom:32px}
-        .video-btn{
-            display:inline-flex;align-items:center;gap:12px;
-            background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:var(--white);
-            font-size:0.95rem;font-weight:600;
-            padding:16px 32px;border-radius:99px;
-            backdrop-filter:blur(8px);transition:background 0.2s,transform 0.2s;
-        }
-        .video-btn:hover{background:rgba(255,255,255,0.18);transform:scale(1.03)}
-        .video-play{
-            width:48px;height:48px;background:var(--beige);border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-        }
-        .video-play svg{width:18px;height:18px;fill:var(--bg);margin-left:3px}
-        /* ─── NOSOTROS ─── */
-        #nosotros{background:var(--surface);border-top:1px solid var(--line)}
-        .nosotros-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-        .nosotros-img{border-radius:var(--radius-lg);overflow:hidden;height:460px}
-        .nosotros-img img{width:100%;height:100%;object-fit:cover}
-        .nosotros-text .section-label{display:block}
-        .nosotros-list{margin-top:28px;display:flex;flex-direction:column;gap:16px}
-        .nosotros-item{display:flex;gap:14px;align-items:flex-start}
-        .nosotros-dot{
-            width:8px;height:8px;border-radius:50%;background:var(--beige);
-            flex-shrink:0;margin-top:6px;
-        }
-        .nosotros-item p{font-size:0.9rem;color:var(--gray-l);line-height:1.6}
-        .nosotros-item strong{color:var(--white)}
-        /* ─── CONTACT ─── */
-        #contacto{background:var(--bg);border-top:1px solid var(--line)}
-        .contact-wa-hero{
-            background:linear-gradient(135deg,#0d2e1a 0%,#0a1f12 100%);
-            border:1px solid rgba(37,211,102,0.2);border-radius:var(--radius-lg);
-            padding:48px 40px;text-align:center;margin-bottom:64px;
-        }
-        .contact-wa-hero h2{font-size:1.8rem;font-weight:800;margin-bottom:10px}
-        .contact-wa-hero p{color:var(--gray-l);margin-bottom:28px}
-        .contact-wa-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-        .contact-wa-btn{
-            display:flex;align-items:center;gap:10px;
-            background:var(--green);color:#fff;font-size:0.95rem;font-weight:700;
-            padding:14px 26px;border-radius:99px;border:none;transition:opacity 0.2s;
-        }
-        .contact-wa-btn:hover{opacity:0.88}
-        .contact-wa-btn svg{width:20px;height:20px;fill:#fff}
-        .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
-        .contact-info h3{font-size:1.2rem;font-weight:700;margin-bottom:24px}
-        .contact-info-list{display:flex;flex-direction:column;gap:18px}
-        .contact-info-item{display:flex;gap:14px;align-items:flex-start}
-        .contact-info-icon{
-            width:40px;height:40px;background:var(--card);border:1px solid var(--line);
-            border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
-            font-size:1.1rem;
-        }
-        .contact-info-label{font-size:0.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
-        .contact-info-val{font-size:0.9rem;font-weight:500}
-        .contact-map{border-radius:var(--radius-lg);overflow:hidden;height:100%;min-height:320px;border:1px solid var(--line)}
-        .contact-map iframe{width:100%;height:100%;min-height:320px;border:none;filter:grayscale(1) invert(1) hue-rotate(180deg)}
-        .contact-form{margin-top:48px}
-        .contact-form h3{font-size:1.2rem;font-weight:700;margin-bottom:24px}
-        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-        .form-group{display:flex;flex-direction:column;gap:6px}
-        .form-group.full{grid-column:1/-1}
-        .form-label{font-size:0.75rem;font-weight:500;color:var(--gray-l);letter-spacing:0.04em}
-        .form-input,.form-textarea{
-            background:var(--card);border:1px solid var(--line);color:var(--white);
-            font-family:inherit;font-size:0.9rem;padding:12px 16px;border-radius:var(--radius);
-            transition:border-color 0.2s;
-        }
-        .form-textarea{resize:vertical;min-height:100px}
-        .form-input:focus,.form-textarea:focus{outline:none;border-color:var(--beige)}
-        .form-submit{
-            background:var(--beige);color:var(--bg);font-size:0.95rem;font-weight:700;
-            padding:14px 32px;border-radius:99px;border:none;margin-top:8px;
-            transition:background 0.2s;
-        }
-        .form-submit:hover{background:var(--beige-l)}
-        /* ─── FOOTER ─── */
-        footer{
-            background:var(--surface);border-top:1px solid var(--line);
-            padding:48px 40px 32px;
-        }
-        .footer-inner{
-            max-width:1280px;margin:0 auto;
-            display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
-        }
-        .footer-logo img{height:36px;object-fit:contain;opacity:0.85}
-        .footer-links{display:flex;gap:28px}
-        .footer-links a{font-size:0.82rem;color:var(--gray);transition:color 0.2s}
-        .footer-links a:hover{color:var(--beige)}
-        .footer-social{display:flex;gap:12px}
-        .footer-social a{
-            width:36px;height:36px;background:var(--card);border:1px solid var(--line);
-            border-radius:9px;display:flex;align-items:center;justify-content:center;
-            font-size:0.85rem;transition:background 0.2s,border-color 0.2s;
-        }
-        .footer-social a:hover{background:var(--card2);border-color:var(--line-h)}
-        .footer-copy{
-            max-width:1280px;margin:28px auto 0;padding-top:20px;
-            border-top:1px solid var(--line);
-            display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-        }
-        .footer-copy p{font-size:0.78rem;color:var(--gray)}
-        /* ─── REVEAL ANIMATIONS ─── */
-        .reveal,.reveal-left,.reveal-right{opacity:0;transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
-        .reveal{transform:translateY(32px)}
-        .reveal-left{transform:translateX(-32px)}
-        .reveal-right{transform:translateX(32px)}
-        .revealed{opacity:1!important;transform:none!important}
-        .stagger-1{transition-delay:0.1s}
-        .stagger-2{transition-delay:0.2s}
-        .stagger-3{transition-delay:0.3s}
-        .stagger-4{transition-delay:0.4s}
-        /* ─── MOTOCICLETAS ─── */
-        #motos{background:var(--bg);border-top:1px solid var(--line)}
-        /* ─── RESPONSIVE ─── */
-        @media(max-width:900px){
-            nav{padding:0 20px}
-            .nav-links{display:none}
-            .nav-cta{display:none}
-            .hamburger{display:flex}
-            section{padding:70px 20px}
-            .hero-content{padding:0 20px}
-            .hero-stats{right:20px;gap:24px}
-            .hero-stat-num{font-size:1.4rem}
-            .nosotros-inner{grid-template-columns:1fr}
-            .nosotros-img{height:280px}
-            .contact-grid{grid-template-columns:1fr}
-            .form-grid{grid-template-columns:1fr}
-            .footer-inner{flex-direction:column;text-align:center}
-            .footer-copy{flex-direction:column;text-align:center}
-            .sticky-wa{padding:12px 20px}
-            .sticky-wa-text{display:none}
-        }
-        @media(max-width:600px){
-            .hero-title{font-size:2rem}
-            .hero-stats{position:relative;bottom:auto;right:auto;flex-direction:row;justify-content:flex-start;margin-top:28px;gap:28px}
-            .hero{align-items:flex-end;padding-bottom:40px}
-            .scroll-hint{display:none}
-            .contact-wa-hero{padding:32px 20px}
-            .contact-wa-btns{flex-direction:column;align-items:center}
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Q2 Saloon — Vehículos para cada Camino | Quito Ecuador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07101e;
+  --surface:#0b1729;
+  --card:#0e1d33;
+  --card2:#121f38;
+  --line:rgba(200,184,154,0.1);
+  --line-h:rgba(200,184,154,0.28);
+  --beige:#c8b89a;
+  --beige-d:#a89070;
+  --beige-l:#dfd0b4;
+  --white:#f0ebe2;
+  --gray-l:#8fa5c4;
+  --gray:#506480;
+  --green:#25D366;
+  --radius:12px;
+  --radius-lg:22px;
+  --ease:cubic-bezier(0.22,1,0.36,1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-optical-sizing:auto;overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{cursor:pointer;font-family:inherit}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--beige-d);border-radius:3px}
+
+/* ─── FLOATING WA ─── */
+.wa-float{
+  position:fixed;bottom:28px;right:28px;z-index:9000;
+  width:56px;height:56px;border-radius:50%;
+  background:var(--green);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 24px rgba(37,211,102,0.45);
+  transition:transform 0.3s var(--ease),box-shadow 0.3s;
+}
+.wa-float:hover{transform:scale(1.12);box-shadow:0 6px 32px rgba(37,211,102,0.6)}
+.wa-float svg{width:28px;height:28px;fill:#fff}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:8000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:68px;
+  transition:background 0.4s,backdrop-filter 0.4s,border-bottom 0.4s;
+}
+nav.scrolled{
+  background:rgba(7,16,30,0.88);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+.nav-logo-mark{
+  display:block;
+  width:170px;
+  height:40px;
+  background-image:
+    url('https://images.patiotuerca.com/thumbs/s/1045x290/amz_ptf_ecuador/dealers/378/principal.jpg'),
+    url('https://lh3.googleusercontent.com/sitesv/AA5AbUD1XzyVON421qqTAUhPR0h9rfgsQp_ksaj5VZt1v267MEcJHCUBApGxeQpwzGbQbsfI_9cqBygASSgT4O48GVQj1suec7aetbGUjskSBwTbqJKhxDNkRaK9Qhf_toJ-U0hmxZ0Fi1QSh6z9xe1ZdWo0eUxzz6rBAeg=w400');
+  background-repeat:no-repeat,no-repeat;
+  background-position:center,center;
+  background-size:contain,contain;
+}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:0.875rem;font-weight:500;letter-spacing:0.04em;color:rgba(240,235,226,0.78);transition:color 0.2s}
+.nav-links a:hover{color:var(--beige)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-wa{
+  display:flex;align-items:center;gap:8px;
+  background:var(--green);color:#fff;font-size:0.82rem;font-weight:600;
+  padding:8px 16px;border-radius:99px;transition:opacity 0.2s;
+}
+.nav-wa:hover{opacity:0.88}
+.nav-wa svg{width:16px;height:16px;fill:#fff}
+.nav-cta{
+  background:transparent;border:1px solid var(--beige);color:var(--beige);
+  font-size:0.82rem;font-weight:500;padding:8px 18px;border-radius:99px;
+  transition:background 0.2s,color 0.2s;
+}
+.nav-cta:hover{background:var(--beige);color:var(--bg)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:0.3s}
+
+/* ─── MOBILE MENU ─── */
+.mobile-menu{
+  display:none;position:fixed;inset:0;z-index:7900;
+  background:rgba(7,16,30,0.97);backdrop-filter:blur(20px);
+  flex-direction:column;align-items:center;justify-content:center;gap:32px;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:1.5rem;font-weight:300;color:var(--white);letter-spacing:0.06em}
+.mobile-menu a:hover{color:var(--beige)}
+.mobile-menu-close{
+  position:absolute;top:24px;right:28px;background:none;border:none;
+  color:var(--white);font-size:2rem;line-height:1;
+}
+
+/* ─── MODAL ─── */
+.modal-ov{
+  position:fixed;inset:0;z-index:9500;
+  background:rgba(7,16,30,0.92);backdrop-filter:blur(12px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-ov.open{display:flex}
+.modal-box{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
+  max-width:860px;width:100%;max-height:92vh;overflow-y:auto;position:relative;
+}
+.modal-close{
+  position:sticky;top:12px;left:100%;margin-right:16px;
+  background:rgba(255,255,255,0.08);border:none;color:var(--white);
+  width:36px;height:36px;border-radius:50%;font-size:1.2rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s;z-index:1;
+}
+.modal-close:hover{background:rgba(255,255,255,0.15)}
+.modal-img{width:100%;height:340px;object-fit:cover;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.modal-body{padding:32px}
+.modal-badge{
+  display:inline-block;background:rgba(200,184,154,0.12);color:var(--beige);
+  font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  padding:4px 12px;border-radius:99px;margin-bottom:12px;
+}
+.modal-title{font-size:1.8rem;font-weight:700;margin-bottom:6px}
+.modal-price{font-size:2rem;font-weight:800;color:var(--beige);margin-bottom:24px}
+.modal-specs{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;
+  margin-bottom:28px;
+}
+.modal-spec{background:var(--card);border-radius:var(--radius);padding:14px 16px}
+.modal-spec-label{font-size:0.72rem;color:var(--gray-l);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.modal-spec-val{font-size:0.95rem;font-weight:600}
+.modal-wa{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:var(--green);color:#fff;font-size:1rem;font-weight:700;
+  width:100%;padding:16px;border-radius:var(--radius);border:none;
+  transition:opacity 0.2s;
+}
+.modal-wa:hover{opacity:0.88}
+.modal-wa svg{width:22px;height:22px;fill:#fff}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;height:100vh;min-height:640px;
+  display:flex;align-items:flex-end;padding-bottom:80px;overflow:hidden;
+}
+.hero-bg-wrap{
+  position:absolute;inset:0;overflow:hidden;
+}
+.hero-bg{
+  width:100%;height:100%;object-fit:cover;object-position:center;
+  animation:kenBurns 18s ease-in-out infinite alternate;
+  transform-origin:center center;
+}
+@keyframes kenBurns{
+  0%{transform:scale(1.06) translate(0%,0%)}
+  100%{transform:scale(1.0) translate(-1%,-0.5%)}
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(7,16,30,0.95) 0%,rgba(7,16,30,0.5) 50%,rgba(7,16,30,0.18) 100%);
+}
+.hero-content{
+  position:relative;z-index:1;max-width:780px;padding:0 40px;
+}
+.hero-logo{
+  position:absolute;top:88px;left:40px;z-index:3;display:inline-flex;align-items:center;justify-content:center;
+  padding:10px 14px;
+  background:linear-gradient(180deg,rgba(7,16,30,0.82) 0%,rgba(7,16,30,0.68) 100%);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:999px;backdrop-filter:blur(12px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+  transition:transform 0.2s ease;
+}
+.hero-logo img{
+  display:block;
+  height:clamp(30px,3.4vw,42px);
+  width:auto;
+  max-width:min(46vw,240px);
+  object-fit:contain;
+  filter:drop-shadow(0 1px 4px rgba(0,0,0,0.35));
+}
+.hero-logo-fallback{
+  display:none;
+  font-size:clamp(1.15rem,2.4vw,1.95rem);
+  font-weight:700;
+  letter-spacing:0.02em;
+  color:var(--white);
+  line-height:1;
+}
+.hero-logo-mark{
+  display:block;
+  width:min(46vw,240px);
+  height:clamp(30px,3.4vw,42px);
+  background-image:url('https://images.patiotuerca.com/thumbs/s/1045x290/amz_ptf_ecuador/dealers/378/principal.jpg');
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  filter:drop-shadow(0 1px 4px rgba(0,0,0,0.35));
+}
+.hero-logo:hover{transform:translateY(-1px)}
+@media(max-width:900px){
+  .hero-logo{top:82px;left:22px;padding:8px 12px;}
+  .hero-logo img{height:30px;max-width:170px;}
+  .hero-logo-mark{height:30px;max-width:170px;width:170px;}
+}
+@media(max-width:600px){
+  .hero-logo{top:72px;left:18px;padding:8px 10px;}
+  .hero-logo img{height:28px;max-width:150px;}
+  .hero-logo-mark{height:28px;max-width:150px;width:150px;}
+}
+.hero-badge{
+  display:inline-block;background:rgba(200,184,154,0.15);color:var(--beige);
+  font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  padding:6px 16px;border-radius:99px;margin-bottom:20px;border:1px solid var(--line-h);
+  animation:heroUp 0.9s var(--ease) 0.2s both;
+}
+.hero-title{
+  font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:800;line-height:1.08;
+  letter-spacing:-0.02em;margin-bottom:18px;
+  animation:heroUp 0.9s var(--ease) 0.5s both;
+}
+.hero-title em{font-style:normal;color:var(--beige)}
+.hero-sub{
+  font-size:1.05rem;font-weight:300;color:var(--gray-l);max-width:520px;
+  margin-bottom:32px;
+  animation:heroUp 0.9s var(--ease) 0.8s both;
+}
+.hero-actions{
+  display:flex;gap:14px;flex-wrap:wrap;
+  animation:heroUp 0.9s var(--ease) 1.05s both;
+}
+@keyframes heroUp{
+  from{opacity:0;transform:translateY(22px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.btn-primary{
+  background:var(--beige);color:var(--bg);font-weight:700;font-size:0.92rem;
+  padding:14px 28px;border-radius:99px;border:none;
+  transition:background 0.2s,transform 0.2s;letter-spacing:0.02em;
+}
+.btn-primary:hover{background:var(--beige-l);transform:translateY(-1px)}
+.btn-ghost{
+  background:transparent;border:1px solid rgba(240,235,226,0.35);color:var(--white);
+  font-size:0.92rem;font-weight:500;padding:14px 28px;border-radius:99px;
+  transition:border-color 0.2s,background 0.2s;
+}
+.btn-ghost:hover{border-color:var(--beige);background:rgba(200,184,154,0.08)}
+.hero-stats{
+  position:absolute;bottom:30px;right:40px;z-index:1;
+  display:flex;gap:40px;
+  animation:heroUp 0.9s var(--ease) 1.3s both;
+}
+.hero-stat{text-align:right}
+.hero-stat-num{font-size:1.8rem;font-weight:800;color:var(--beige);line-height:1}
+.hero-stat-label{font-size:0.72rem;color:var(--gray-l);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
+.scroll-hint{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:1;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  color:var(--gray);font-size:0.7rem;letter-spacing:0.1em;
+  animation:heroUp 0.9s var(--ease) 1.6s both;
+}
+.scroll-hint-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--beige),transparent)}
+
+/* ─── MARQUEE ─── */
+.marquee-strip{
+  background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:16px 0;overflow:hidden;
+}
+.marquee-track{
+  display:flex;gap:48px;width:max-content;
+  animation:marquee 22s linear infinite;
+}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.marquee-item{font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);white-space:nowrap}
+.marquee-sep{color:var(--beige);opacity:0.4}
+
+/* ─── STICKY WA BAR ─── */
+.sticky-wa{
+  position:fixed;bottom:0;left:0;right:0;z-index:7800;
+  background:rgba(7,16,30,0.95);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  transform:translateY(100%);transition:transform 0.5s var(--ease);
+}
+.sticky-wa.show{transform:translateY(0)}
+.sticky-wa-text{font-size:0.9rem;color:var(--gray-l)}
+.sticky-wa-text strong{color:var(--white)}
+.sticky-wa-btns{display:flex;gap:10px}
+.sticky-wa-btn{
+  display:flex;align-items:center;gap:8px;
+  background:var(--green);color:#fff;font-size:0.82rem;font-weight:700;
+  padding:10px 18px;border-radius:99px;border:none;white-space:nowrap;
+  transition:opacity 0.2s;
+}
+.sticky-wa-btn:hover{opacity:0.88}
+.sticky-wa-btn svg{width:16px;height:16px;fill:#fff}
+
+/* ─── SECTIONS ─── */
+section{padding:100px 40px}
+.section-label{
+  font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--beige);margin-bottom:12px;
+}
+.section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;line-height:1.12;letter-spacing:-0.02em}
+.section-sub{font-size:1rem;color:var(--gray-l);margin-top:12px;max-width:540px}
+.section-head{margin-bottom:56px}
+.container{max-width:1280px;margin:0 auto}
+
+/* ─── VEHICLE CARD ─── */
+.vcard{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
+  overflow:hidden;cursor:pointer;transition:transform 0.3s var(--ease),box-shadow 0.3s,border-color 0.3s;
+}
+.vcard:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.5);border-color:var(--line-h)}
+.vcard-img-wrap{position:relative;height:220px;overflow:hidden}
+.vcard-img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s var(--ease)}
+.vcard:hover .vcard-img{transform:scale(1.05)}
+.vcard-badge{
+  position:absolute;top:12px;left:12px;
+  background:rgba(7,16,30,0.78);backdrop-filter:blur(6px);
+  color:var(--beige);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  padding:4px 10px;border-radius:99px;border:1px solid var(--line-h);
+}
+.vcard-feat-tag{
+  position:absolute;top:12px;right:12px;
+  background:var(--beige);color:var(--bg);
+  font-size:0.65rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+  padding:4px 10px;border-radius:99px;
+}
+.vcard-body{padding:20px}
+.vcard-brand{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-l);margin-bottom:4px}
+.vcard-model{font-size:1.1rem;font-weight:700;margin-bottom:4px;line-height:1.2}
+.vcard-year{font-size:0.82rem;color:var(--gray);margin-bottom:14px}
+.vcard-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.vcard-meta span{
+  font-size:0.72rem;color:var(--gray-l);
+  background:rgba(255,255,255,0.04);padding:3px 8px;border-radius:6px;
+}
+.vcard-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.vcard-price-label{font-size:0.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em}
+.vcard-price{font-size:1.25rem;font-weight:800;color:var(--beige)}
+.vcard-wa{
+  display:flex;align-items:center;gap:6px;
+  background:var(--green);color:#fff;font-size:0.75rem;font-weight:700;
+  padding:8px 14px;border-radius:99px;border:none;
+  transition:opacity 0.2s;flex-shrink:0;
+}
+.vcard-wa:hover{opacity:0.88}
+.vcard-wa svg{width:14px;height:14px;fill:#fff}
+
+/* ─── FEATURED SECTION ─── */
+#featured{background:var(--surface);border-top:1px solid var(--line)}
+.featured-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;
+}
+
+/* ─── FILTERS ─── */
+.filters{
+  display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;
+  padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
+}
+.filter-select{
+  background:var(--card);border:1px solid var(--line);color:var(--white);
+  font-family:inherit;font-size:0.85rem;padding:10px 16px;border-radius:var(--radius);
+  flex:1;min-width:160px;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238fa5c4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+  padding-right:36px;cursor:pointer;transition:border-color 0.2s;
+}
+.filter-select:focus{outline:none;border-color:var(--beige)}
+.inventory-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;
+}
+.no-results{
+  grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gray);
+}
+.no-results h3{font-size:1.2rem;margin-bottom:8px;color:var(--white)}
+
+/* ─── TRUST SECTION ─── */
+#trust{background:linear-gradient(135deg,var(--surface) 0%,var(--bg) 100%);border-top:1px solid var(--line)}
+.trust-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.trust-card{background:var(--surface);padding:48px 36px;transition:background 0.3s}
+.trust-card:hover{background:var(--card)}
+.trust-icon{width:48px;height:48px;margin-bottom:20px;color:var(--beige)}
+.trust-icon svg{width:100%;height:100%;stroke:var(--beige)}
+.trust-title{font-size:1.2rem;font-weight:700;margin-bottom:10px}
+.trust-desc{font-size:0.9rem;color:var(--gray-l);line-height:1.65}
+
+/* ─── VIDEO SECTION ─── */
+#video{
+  position:relative;padding:0;height:520px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.video-bg{
+  position:absolute;inset:0;
+  background:url('https://lh3.googleusercontent.com/sitesv/AA5AbUDA6pobrYNROht_yKAv60AB0IbHdi2uXfi7wWBoOTAgivSeljkts6UfXFBd4s69Chik8uDJWxpx8Whgl7eM9v0vCuDI2CKd_AtFbIj85-2KpK_iP8udqBj0ALQyHbPWhohN7ZCCr6Dm8n-Pi_7d44AiuGRbnWMkbFA=w1920') center/cover no-repeat;
+  filter:brightness(0.25);
+}
+.video-content{position:relative;z-index:1;text-align:center;padding:40px}
+.video-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:16px;letter-spacing:-0.02em}
+.video-sub{font-size:1rem;color:var(--gray-l);margin-bottom:32px}
+.video-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);
+  color:var(--white);font-size:0.95rem;font-weight:600;
+  padding:16px 32px;border-radius:99px;
+  backdrop-filter:blur(8px);transition:background 0.2s,transform 0.2s;
+}
+.video-btn:hover{background:rgba(255,255,255,0.18);transform:scale(1.03)}
+.video-play{
+  width:48px;height:48px;background:var(--beige);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.video-play svg{width:18px;height:18px;fill:var(--bg);margin-left:3px}
+
+/* ─── NOSOTROS ─── */
+#nosotros{background:var(--surface);border-top:1px solid var(--line)}
+.nosotros-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.nosotros-img{border-radius:var(--radius-lg);overflow:hidden;height:460px}
+.nosotros-img img{width:100%;height:100%;object-fit:cover}
+.nosotros-text .section-label{display:block}
+.nosotros-list{margin-top:28px;display:flex;flex-direction:column;gap:16px}
+.nosotros-item{display:flex;gap:14px;align-items:flex-start}
+.nosotros-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--beige);
+  flex-shrink:0;margin-top:6px;
+}
+.nosotros-item p{font-size:0.9rem;color:var(--gray-l);line-height:1.6}
+.nosotros-item strong{color:var(--white)}
+
+/* ─── CONTACT ─── */
+#contacto{background:var(--bg);border-top:1px solid var(--line)}
+.contact-wa-hero{
+  background:linear-gradient(135deg,#0d2e1a 0%,#0a1f12 100%);
+  border:1px solid rgba(37,211,102,0.2);border-radius:var(--radius-lg);
+  padding:48px 40px;text-align:center;margin-bottom:64px;
+}
+.contact-wa-hero h2{font-size:1.8rem;font-weight:800;margin-bottom:10px}
+.contact-wa-hero p{color:var(--gray-l);margin-bottom:28px}
+.contact-wa-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.contact-wa-btn{
+  display:flex;align-items:center;gap:10px;
+  background:var(--green);color:#fff;font-size:0.95rem;font-weight:700;
+  padding:14px 26px;border-radius:99px;border:none;transition:opacity 0.2s;
+}
+.contact-wa-btn:hover{opacity:0.88}
+.contact-wa-btn svg{width:20px;height:20px;fill:#fff}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.contact-info h3{font-size:1.2rem;font-weight:700;margin-bottom:24px}
+.contact-info-list{display:flex;flex-direction:column;gap:18px}
+.contact-info-item{display:flex;gap:14px;align-items:flex-start}
+.contact-info-icon{
+  width:40px;height:40px;background:var(--card);border:1px solid var(--line);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:1.1rem;
+}
+.contact-info-label{font-size:0.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
+.contact-info-val{font-size:0.9rem;font-weight:500}
+.contact-map{border-radius:var(--radius-lg);overflow:hidden;height:100%;min-height:320px;border:1px solid var(--line)}
+.contact-map iframe{width:100%;height:100%;min-height:320px;border:none;filter:grayscale(1) invert(1) hue-rotate(180deg)}
+.contact-form{margin-top:48px}
+.contact-form h3{font-size:1.2rem;font-weight:700;margin-bottom:24px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:0.75rem;font-weight:500;color:var(--gray-l);letter-spacing:0.04em}
+.form-input,.form-textarea{
+  background:var(--card);border:1px solid var(--line);color:var(--white);
+  font-family:inherit;font-size:0.9rem;padding:12px 16px;border-radius:var(--radius);
+  transition:border-color 0.2s;
+}
+.form-textarea{resize:vertical;min-height:100px}
+.form-input:focus,.form-textarea:focus{outline:none;border-color:var(--beige)}
+.form-submit{
+  background:var(--beige);color:var(--bg);font-size:0.95rem;font-weight:700;
+  padding:14px 32px;border-radius:99px;border:none;margin-top:8px;
+  transition:background 0.2s;
+}
+.form-submit:hover{background:var(--beige-l)}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--surface);border-top:1px solid var(--line);
+  padding:48px 40px 32px;
+}
+.footer-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+}
+.footer-logo img{height:36px;object-fit:contain;opacity:0.85}
+.footer-logo-mark{
+  display:block;
+  width:155px;
+  height:36px;
+  opacity:0.85;
+  background-image:
+    url('https://images.patiotuerca.com/thumbs/s/1045x290/amz_ptf_ecuador/dealers/378/principal.jpg'),
+    url('https://lh3.googleusercontent.com/sitesv/AA5AbUD1XzyVON421qqTAUhPR0h9rfgsQp_ksaj5VZt1v267MEcJHCUBApGxeQpwzGbQbsfI_9cqBygASSgT4O48GVQj1suec7aetbGUjskSBwTbqJKhxDNkRaK9Qhf_toJ-U0hmxZ0Fi1QSh6z9xe1ZdWo0eUxzz6rBAeg=w400');
+  background-repeat:no-repeat,no-repeat;
+  background-position:center,center;
+  background-size:contain,contain;
+}
+.footer-links{display:flex;gap:28px}
+.footer-links a{font-size:0.82rem;color:var(--gray);transition:color 0.2s}
+.footer-links a:hover{color:var(--beige)}
+.footer-social{display:flex;gap:12px}
+.footer-social a{
+  width:36px;height:36px;background:var(--card);border:1px solid var(--line);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;transition:background 0.2s,border-color 0.2s;
+}
+.footer-social a:hover{background:var(--card2);border-color:var(--line-h)}
+.footer-copy{
+  max-width:1280px;margin:28px auto 0;padding-top:20px;
+  border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.footer-copy p{font-size:0.78rem;color:var(--gray)}
+
+/* ─── REVEAL ANIMATIONS ─── */
+.reveal,.reveal-left,.reveal-right{opacity:0;transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
+.reveal{transform:translateY(32px)}
+.reveal-left{transform:translateX(-32px)}
+.reveal-right{transform:translateX(32px)}
+.revealed{opacity:1!important;transform:none!important}
+.stagger-1{transition-delay:0.1s}
+.stagger-2{transition-delay:0.2s}
+.stagger-3{transition-delay:0.3s}
+.stagger-4{transition-delay:0.4s}
+
+/* ─── MOTOCICLETAS ─── */
+#motos{background:var(--bg);border-top:1px solid var(--line)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .nav-cta{display:none}
+  .hamburger{display:flex}
+  section{padding:70px 20px}
+  .hero-content{padding:0 20px}
+  .hero-stats{right:20px;gap:24px}
+  .hero-stat-num{font-size:1.4rem}
+  .nosotros-inner{grid-template-columns:1fr}
+  .nosotros-img{height:280px}
+  .contact-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column;text-align:center}
+  .footer-copy{flex-direction:column;text-align:center}
+  .sticky-wa{padding:12px 20px}
+  .sticky-wa-text{display:none}
+}
+@media(max-width:600px){
+  .hero-title{font-size:2rem}
+  .hero-stats{position:relative;bottom:auto;right:auto;flex-direction:row;justify-content:flex-start;margin-top:28px;gap:28px}
+  .hero{align-items:flex-end;padding-bottom:40px}
+  .scroll-hint{display:none}
+  .contact-wa-hero{padding:32px 20px}
+  .contact-wa-btns{flex-direction:column;align-items:center}
+}
+</style>
 </head>
 <body>
-    <!-- FLOATING WA -->
-    <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20me%20interesa%20un%20veh%C3%ADculo%20de%20Q2%20Saloon" target="_blank" class="wa-float" title="Chatear por WhatsApp">
-        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+
+<!-- FLOATING WA -->
+<a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20me%20interesa%20un%20veh%C3%ADculo%20de%20Q2%20Saloon" target="_blank" class="wa-float" title="Chatear por WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-mark" role="img" aria-label="Q2 Saloon Logo"></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#featured">Destacados</a></li>
+    <li><a href="#inventario">Inventario</a></li>
+    <li><a href="#trust">Confianza</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Q2%20Saloon" target="_blank" class="nav-wa">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
     </a>
-    <!-- NAV -->
-    <nav id="main-nav">
-        <a href="#" class="nav-logo">
-            <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUD1XzyVON421qqTAUhPR0h9rfgsQp_ksaj5VZt1v267MEcJHCUBApGxeQpwzGbQbsfI_9cqBygASSgT4O48GVQj1suec7aetbGUjskSBwTbqJKhxDNkRaK9Qhf_toJ-U0hmxZ0Fi1QSh6z9xe1ZdWo0eUxzz6rBAeg=w400" alt="Q2 Saloon" onerror="this.style.display='none'"/>
+    <button class="nav-cta" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Contactar</button>
+    <button class="hamburger" id="ham" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mob-menu">
+  <button class="mobile-menu-close" id="mob-close">×</button>
+  <a href="#featured" onclick="closeMob()">Destacados</a>
+  <a href="#inventario" onclick="closeMob()">Inventario</a>
+  <a href="#trust" onclick="closeMob()">Confianza Q2</a>
+  <a href="#nosotros" onclick="closeMob()">Nosotros</a>
+  <a href="#contacto" onclick="closeMob()">Contacto</a>
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal-ov" onclick="closeModal(event,false)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal(null,true)">×</button>
+    <img class="modal-img" id="modal-img" src="" alt=""/>
+    <div class="modal-body">
+      <span class="modal-badge" id="modal-badge"></span>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-price" id="modal-price"></div>
+      <div class="modal-specs" id="modal-specs"></div>
+      <button class="modal-wa" id="modal-wa">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Consultar este vehículo por WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg-wrap">
+    <img class="hero-bg" src="https://lh3.googleusercontent.com/sitesv/AA5AbUDA6pobrYNROht_yKAv60AB0IbHdi2uXfi7wWBoOTAgivSeljkts6UfXFBd4s69Chik8uDJWxpx8Whgl7eM9v0vCuDI2CKd_AtFbIj85-2KpK_iP8udqBj0ALQyHbPWhohN7ZCCr6Dm8n-Pi_7d44AiuGRbnWMkbFA=w1920" alt="Q2 Saloon" onerror="this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80'"/>
+  </div>
+  <div class="hero-logo">
+    <span class="hero-logo-mark" role="img" aria-label="Q2 Saloon Logo"></span>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-badge">Quito, Ecuador · Desde 2015</span>
+    <h1 class="hero-title">Vehículos seleccionados.<br/><em>Calidad Premium.</em></h1>
+    <p class="hero-sub">Experiencia personalizada en la compra de tu próximo automóvil premium. Cada vehículo verificado, documentado y listo para ti.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('inventario').scrollIntoView({behavior:'smooth'})">Ver inventario</button>
+      <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20asesor%C3%ADa%20personalizada" target="_blank" class="btn-ghost">Asesoría gratuita</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="stat1">0+</div>
+        <div class="hero-stat-label">Vehículos</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="stat2">0+</div>
+        <div class="hero-stat-label">Años</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="stat3">0+</div>
+        <div class="hero-stat-label">Clientes</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-hint-line"></div>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track" id="marquee-track">
+    <span class="marquee-item">BMW</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Mercedes-Benz</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Audi</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Toyota</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Volkswagen</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Jeep</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Honda</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Yamaha</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Porsche</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Lexus</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">BMW</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Mercedes-Benz</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Audi</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Toyota</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Volkswagen</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Jeep</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Honda</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Yamaha</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Porsche</span><span class="marquee-sep">·</span>
+    <span class="marquee-item">Lexus</span><span class="marquee-sep">·</span>
+  </div>
+</div>
+
+<!-- STICKY WA BAR -->
+<div class="sticky-wa" id="sticky-wa">
+  <div class="sticky-wa-text"><strong>¿Encontraste tu próximo vehículo?</strong> Nuestros asesores están listos para ayudarte.</div>
+  <div class="sticky-wa-btns">
+    <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20informaci%C3%B3n%20de%20un%20veh%C3%ADculo" target="_blank" class="sticky-wa-btn">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Asesor 1
+    </a>
+    <a href="https://api.whatsapp.com/send?phone=593997929809&text=Hola%2C%20quiero%20informaci%C3%B3n%20de%20un%20veh%C3%ADculo" target="_blank" class="sticky-wa-btn">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Asesor 2
+    </a>
+  </div>
+</div>
+
+<!-- FEATURED VEHICLES -->
+<section id="featured">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-label">Selección especial</div>
+      <h2 class="section-title">Vehículos destacados</h2>
+      <p class="section-sub">Una curación exclusiva de los mejores vehículos disponibles en nuestro inventario.</p>
+    </div>
+    <div class="featured-grid" id="featured-grid"></div>
+  </div>
+</section>
+
+<!-- INVENTARIO -->
+<section id="inventario">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-label">Inventario completo</div>
+      <h2 class="section-title">Todos los vehículos</h2>
+      <p class="section-sub">Filtra por marca, año o presupuesto. Resultados en tiempo real.</p>
+    </div>
+    <div class="filters reveal">
+      <select class="filter-select" id="f-brand" onchange="renderInventory()">
+        <option value="">Todas las marcas</option>
+      </select>
+      <select class="filter-select" id="f-year" onchange="renderInventory()">
+        <option value="">Todos los años</option>
+      </select>
+      <select class="filter-select" id="f-price" onchange="renderInventory()">
+        <option value="">Cualquier precio</option>
+        <option value="0-30000">Hasta $30,000</option>
+        <option value="30000-50000">$30,000 – $50,000</option>
+        <option value="50000-70000">$50,000 – $70,000</option>
+        <option value="70000-999999">Más de $70,000</option>
+      </select>
+    </div>
+    <div class="inventory-grid" id="inventory-grid"></div>
+  </div>
+</section>
+
+<!-- MOTOCICLETAS -->
+<section id="motos">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-label">Dos ruedas</div>
+      <h2 class="section-title">Motocicletas</h2>
+      <p class="section-sub">Motos premium seleccionadas con el mismo estándar de calidad.</p>
+    </div>
+    <div class="inventory-grid" id="motos-grid"></div>
+  </div>
+</section>
+
+<!-- TRUST SECTION -->
+<section id="trust">
+  <div class="container">
+    <div class="section-head reveal" style="text-align:center">
+      <div class="section-label">Por qué elegirnos</div>
+      <h2 class="section-title">Confianza Q2</h2>
+      <p class="section-sub" style="margin:12px auto 0">Cada vehículo pasa por un proceso riguroso antes de llegar a ti.</p>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card reveal stagger-1">
+        <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+        <div class="trust-title">Vehículos verificados</div>
+        <p class="trust-desc">Cada vehículo es inspeccionado mecánica y estéticamente por nuestro equipo técnico certificado antes de publicarse.</p>
+      </div>
+      <div class="trust-card reveal stagger-2">
+        <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg></div>
+        <div class="trust-title">Documentación al día</div>
+        <p class="trust-desc">Revisamos matrículas, títulos de propiedad, historial de siniestros y deudas. Tú compras con total tranquilidad.</p>
+      </div>
+      <div class="trust-card reveal stagger-3">
+        <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg></div>
+        <div class="trust-title">Asesoría personalizada</div>
+        <p class="trust-desc">Nuestros asesores te acompañan en cada paso: desde la elección del vehículo hasta el trámite final de transferencia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO SECTION -->
+<div id="video">
+  <div class="video-bg"></div>
+  <div class="video-content reveal">
+    <h2 class="video-title">Vive la experiencia Q2 Saloon</h2>
+    <p class="video-sub">Más de 10 años siendo el referente de vehículos premium en Quito.</p>
+    <a href="https://www.youtube.com/channel/UCdUJL8k4oklT3aYGzAlbaOg" target="_blank" class="video-btn">
+      <div class="video-play">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      Ver canal de YouTube
+    </a>
+  </div>
+</div>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div class="container">
+    <div class="nosotros-inner">
+      <div class="nosotros-img reveal-left">
+        <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUDA6pobrYNROht_yKAv60AB0IbHdi2uXfi7wWBoOTAgivSeljkts6UfXFBd4s69Chik8uDJWxpx8Whgl7eM9v0vCuDI2CKd_AtFbIj85-2KpK_iP8udqBj0ALQyHbPWhohN7ZCCr6Dm8n-Pi_7d44AiuGRbnWMkbFA=w1920" alt="Q2 Saloon showroom" onerror="this.src='https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=900&q=80'"/>
+      </div>
+      <div class="nosotros-text reveal-right">
+        <span class="section-label">Quiénes somos</span>
+        <h2 class="section-title">Un estándar superior desde 2015</h2>
+        <div class="nosotros-list">
+          <div class="nosotros-item">
+            <div class="nosotros-dot"></div>
+            <p><strong>Más de 10 años</strong> en el mercado automotriz premium de Quito, construyendo relaciones basadas en la confianza.</p>
+          </div>
+          <div class="nosotros-item">
+            <div class="nosotros-dot"></div>
+            <p><strong>500+ clientes satisfechos</strong> que nos han confiado una de las decisiones financieras más importantes de su vida.</p>
+          </div>
+          <div class="nosotros-item">
+            <div class="nosotros-dot"></div>
+            <p><strong>Proceso transparente</strong>: precios justos, vehículos verificados y asesoría honesta sin presiones.</p>
+          </div>
+          <div class="nosotros-item">
+            <div class="nosotros-dot"></div>
+            <p><strong>Ubicados en el norte de Quito</strong>, Av. 6 de Diciembre N42-30 y Tomás de Berlanga, de fácil acceso.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="container">
+    <div class="contact-wa-hero reveal">
+      <h2>¿Listo para encontrar tu vehículo ideal?</h2>
+      <p>Escríbenos ahora. Respuesta inmediata de lunes a sábado.</p>
+      <div class="contact-wa-btns">
+        <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20comprar%20un%20veh%C3%ADculo" target="_blank" class="contact-wa-btn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Asesor 1 · +593 995 393 656
         </a>
-        <ul class="nav-links">
-            <li><a href="#featured">Destacados</a></li>
-            <li><a href="#inventario">Inventario</a></li>
-            <li><a href="#trust">Confianza</a></li>
-            <li><a href="#nosotros">Nosotros</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-        </ul>
-        <div class="nav-right">
-            <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Q2%20Saloon" target="_blank" class="nav-wa">
-                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                WhatsApp
-            </a>
-            <button class="nav-cta" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Contactar</button>
-            <button class="hamburger" id="ham" aria-label="Menú">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-    </nav>
-    <!-- MOBILE MENU -->
-    <div class="mobile-menu" id="mob-menu">
-        <button class="mobile-menu-close" id="mob-close">×</button>
-        <a href="#featured" onclick="closeMob()">Destacados</a>
-        <a href="#inventario" onclick="closeMob()">Inventario</a>
-        <a href="#trust" onclick="closeMob()">Confianza Q2</a>
-        <a href="#nosotros" onclick="closeMob()">Nosotros</a>
-        <a href="#contacto" onclick="closeMob()">Contacto</a>
+        <a href="https://api.whatsapp.com/send?phone=593997929809&text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20comprar%20un%20veh%C3%ADculo" target="_blank" class="contact-wa-btn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Asesor 2 · +593 997 929 809
+        </a>
+      </div>
     </div>
-    <!-- MODAL -->
-    <div class="modal-ov" id="modal-ov" onclick="closeModal(event,false)">
-        <div class="modal-box" id="modal-box">
-            <button class="modal-close" onclick="closeModal(null,true)">×</button>
-            <img class="modal-img" id="modal-img" src="" alt=""/>
-            <div class="modal-body">
-                <span class="modal-badge" id="modal-badge"></span>
-                <div class="modal-title" id="modal-title"></div>
-                <div class="modal-price" id="modal-price"></div>
-                <div class="modal-specs" id="modal-specs"></div>
-                <button class="modal-wa" id="modal-wa">
-                    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Consultar este vehículo por WhatsApp
-                </button>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal-left">
+        <h3>Información de contacto</h3>
+        <div class="contact-info-list">
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--beige)"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg></div>
+            <div>
+              <div class="contact-info-label">Dirección</div>
+              <div class="contact-info-val">Av. 6 de Diciembre N42-30 y Tomás de Berlanga, Quito</div>
             </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--beige)"><path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></div>
+            <div>
+              <div class="contact-info-label">Teléfono</div>
+              <div class="contact-info-val">2920205</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--beige)"><path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg></div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-val">info@q2saloon.com</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--beige)"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <div>
+              <div class="contact-info-label">Horario</div>
+              <div class="contact-info-val">Lun–Vie 9:00–18:00 / Sáb 10:00–14:00</div>
+            </div>
+          </div>
         </div>
+        <div class="contact-form">
+          <h3>Envíanos un mensaje</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input class="form-input" type="text" placeholder="Tu nombre"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Teléfono</label>
+              <input class="form-input" type="tel" placeholder="+593 999 000 000"/>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Email</label>
+              <input class="form-input" type="email" placeholder="tu@email.com"/>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Mensaje</label>
+              <textarea class="form-textarea" placeholder="¿En qué vehículo estás interesado?"></textarea>
+            </div>
+          </div>
+          <button class="form-submit" onclick="submitForm(this)">Enviar mensaje</button>
+        </div>
+      </div>
+      <div class="contact-map reveal-right">
+        <iframe src="https://maps.google.com/maps?q=-0.16698,-78.475655&z=16&output=embed" allowfullscreen loading="lazy"></iframe>
+      </div>
     </div>
-    <!-- HERO -->
-    <section class="hero" id="inicio">
-        <div class="hero-bg-wrap">
-            <img class="hero-bg" src="https://lh3.googleusercontent.com/sitesv/AA5AbUDA6pobrYNROht_yKAv60AB0IbHdi2uXfi7wWBoOTAgivSeljkts6UfXFBd4s69Chik8uDJWxpx8Whgl7eM9v0vCuDI2CKd_AtFbIj85-2KpK_iP8udqBj0ALQyHbPWhohN7ZCCr6Dm8n-Pi_7d44AiuGRbnWMkbFA=w1920" alt="Q2 Saloon" onerror="this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80'"/>
-        </div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <span class="hero-badge">Quito, Ecuador · Desde 2015</span>
-            <h1 class="hero-title">Vehículos seleccionados.<br/><em>Un estándar superior.</em></h1>
-            <p class="hero-sub">Experiencia personalizada en la compra de tu próximo automóvil premium. Cada vehículo verificado, documentado y listo para ti.</p>
-            <div class="hero-actions">
-                <button class="btn-primary" onclick="document.getElementById('inventario').scrollIntoView({behavior:'smooth'})">Ver inventario</button>
-                <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20asesor%C3%ADa%20personalizada" target="_blank" class="btn-ghost">Asesoría gratuita</a>
-            </div>
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="hero-stat-num" id="stat1">0+</div>
-                    <div class="hero-stat-label">Vehículos</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-num" id="stat2">0+</div>
-                    <div class="hero-stat-label">Años</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-num" id="stat3">0+</div>
-                    <div class="hero-stat-label">Clientes</div>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-hint">
-            <div class="scroll-hint-line"></div>
-            <span>SCROLL</span>
-        </div>
-    </section>
-    <!-- MARQUEE -->
-    <div class="marquee-strip">
-        <div class="marquee-track" id="marquee-track">
-            <span class="marquee-item">BMW</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Mercedes-Benz</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Audi</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Toyota</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Volkswagen</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Jeep</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Honda</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Yamaha</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Porsche</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Lexus</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">BMW</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Mercedes-Benz</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Audi</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Toyota</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Volkswagen</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Jeep</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Honda</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Yamaha</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Porsche</span><span class="marquee-sep">·</span>
-            <span class="marquee-item">Lexus</span><span class="marquee-sep">·</span>
-        </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="#" class="footer-logo">
+      <span class="footer-logo-mark" role="img" aria-label="Q2 Saloon Logo"></span>
+    </a>
+    <div class="footer-links">
+      <a href="#featured">Destacados</a>
+      <a href="#inventario">Inventario</a>
+      <a href="#trust">Confianza Q2</a>
+      <a href="#contacto">Contacto</a>
     </div>
-    <!-- STICKY WA BAR -->
-    <div class="sticky-wa" id="sticky-wa">
-        <div class="sticky-wa-text"><strong>¿Encontraste tu próximo vehículo?</strong> Nuestros asesores están listos para ayudarte.</div>
-        <div class="sticky-wa-btns">
-            <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20informaci%C3%B3n%20de%20un%20veh%C3%ADculo" target="_blank" class="sticky-wa-btn">
-                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Asesor 1
-            </a>
-            <a href="https://api.whatsapp.com/send?phone=593997929809&text=Hola%2C%20quiero%20informaci%C3%B3n%20de%20un%20veh%C3%ADculo" target="_blank" class="sticky-wa-btn">
-                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Asesor 2
-            </a>
-        </div>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/q2saloonautos" target="_blank" title="Facebook">f</a>
+      <a href="https://www.instagram.com/q2saloonautos" target="_blank" title="Instagram">in</a>
+      <a href="https://www.youtube.com/channel/UCdUJL8k4oklT3aYGzAlbaOg" target="_blank" title="YouTube">▶</a>
     </div>
-    <!-- FEATURED VEHICLES -->
-    <section id="featured">
-        <div class="container">
-            <div class="section-head reveal">
-                <div class="section-label">Selección especial</div>
-                <h2 class="section-title">Vehículos destacados</h2>
-                <p class="section-sub">Una curación exclusiva de los mejores vehículos disponibles en nuestro inventario.</p>
-            </div>
-            <div class="featured-grid" id="featured-grid"></div>
-        </div>
-    </section>
-    <!-- INVENTARIO -->
-    <section id="inventario">
-        <div class="container">
-            <div class="section-head reveal">
-                <div class="section-label">Inventario completo</div>
-                <h2 class="section-title">Todos los vehículos</h2>
-                <p class="section-sub">Filtra por marca, año o presupuesto. Resultados en tiempo real.</p>
-            </div>
-            <div class="filters reveal">
-                <select class="filter-select" id="f-brand" onchange="renderInventory()">
-                    <option value="">Todas las marcas</option>
-                </select>
-                <select class="filter-select" id="f-year" onchange="renderInventory()">
-                    <option value="">Todos los años</option>
-                </select>
-                <select class="filter-select" id="f-price" onchange="renderInventory()">
-                    <option value="">Cualquier precio</option>
-                    <option value="0-30000">Hasta $30,000</option>
-                    <option value="30000-50000">$30,000 – $50,000</option>
-                    <option value="50000-70000">$50,000 – $70,000</option>
-                    <option value="70000-999999">Más de $70,000</option>
-                </select>
-            </div>
-            <div class="inventory-grid" id="inventory-grid"></div>
-        </div>
-    </section>
-    <!-- MOTOCICLETAS -->
-    <section id="motos">
-        <div class="container">
-            <div class="section-head reveal">
-                <div class="section-label">Dos ruedas</div>
-                <h2 class="section-title">Motocicletas</h2>
-                <p class="section-sub">Motos premium seleccionadas con el mismo estándar de calidad.</p>
-            </div>
-            <div class="inventory-grid" id="motos-grid"></div>
-        </div>
-    </section>
-    <!-- TRUST SECTION -->
-    <section id="trust">
-        <div class="container">
-            <div class="section-head reveal" style="text-align:center">
-                <div class="section-label">Por qué elegirnos</div>
-                <h2 class="section-title">Confianza Q2</h2>
-                <p class="section-sub" style="margin:12px auto 0">Cada vehículo pasa por un proceso riguroso antes de llegar a ti.</p>
-            </div>
-            <div class="trust-grid">
-                <div class="trust-card reveal stagger-1">
-                    <div class="trust-icon">🔍</div>
-                    <div class="trust-title">Vehículos verificados</div>
-                    <p class="trust-desc">Cada vehículo es inspeccionado mecánica y estéticamente por nuestro equipo técnico certificado antes de publicarse.</p>
-                </div>
-                <div class="trust-card reveal stagger-2">
-                    <div class="trust-icon">📄</div>
-                    <div class="trust-title">Documentación al día</div>
-                    <p class="trust-desc">Revisamos matrículas, títulos de propiedad, historial de siniestros y deudas. Tú compras con total tranquilidad.</p>
-                </div>
-                <div class="trust-card reveal stagger-3">
-                    <div class="trust-icon">🤝</div>
-                    <div class="trust-title">Asesoría personalizada</div>
-                    <p class="trust-desc">Nuestros asesores te acompañan en cada paso: desde la elección del vehículo hasta el trámite final de transferencia.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- VIDEO SECTION -->
-    <div id="video">
-        <div class="video-bg"></div>
-        <div class="video-content reveal">
-            <h2 class="video-title">Vive la experiencia Q2 Saloon</h2>
-            <p class="video-sub">Más de 10 años siendo el referente de vehículos premium en Quito.</p>
-            <a href="https://www.youtube.com/channel/UCdUJL8k4oklT3aYGzAlbaOg" target="_blank" class="video-btn">
-                <div class="video-play">
-                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                </div>
-                Ver canal de YouTube
-            </a>
-        </div>
+  </div>
+  <div class="footer-copy">
+    <p>© 2024 Q2 Saloon. Todos los derechos reservados.</p>
+    <p>Av. 6 de Diciembre N42-30 y Tomás de Berlanga, Quito, Ecuador</p>
+  </div>
+</footer>
+
+<script>
+/* ─── VEHICLE DATA ─── */
+const VEHICLES = [
+  {id:1, brand:'Mercedes-Benz', model:'C300', year:2019, price:49900, mileage:66367, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://di-uploads-pod7.dealerinspire.com/autohausonedens/uploads/2018/12/19CClass-CityDaytime.jpg'},
+  {id:2, brand:'Toyota', model:'Sequoia Platinum', year:2019, price:85000, mileage:26220, mileageUnit:'mi', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://toyotacanada.scene7.com/is/image/toyotacanada/2019_Toyota_Sequoia-1?ts=1688746476245&$Media-Large$&dpr=off'},
+  {id:3, brand:'BMW', model:'X6 M Competition', year:2022, price:177000, mileage:17360, mileageUnit:'mi', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://hips.hearstapps.com/hmg-prod/images/2020-bmw-x6-m-competition-103-1569964622.jpg?crop=0.867xw:0.651xh;0.0112xw,0.281xh&resize=1200:*'},
+  {id:4, brand:'Mercedes-Benz', model:'G63 AMG', year:2017, price:195990, mileage:64147, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://images.cdn.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/merc-g63-amg-2_0_0.jpg?itok=kHnI7ZVW'},
+  {id:5, brand:'BMW', model:'320i', year:2020, price:35500, mileage:88687, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1607853202273-797f1c22a38e?auto=format&fit=crop&w=900&q=80'},
+  {id:6, brand:'Land Rover', model:'Range Rover Autobiography', year:2015, price:79990, mileage:74637, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?auto=format&fit=crop&w=900&q=80'},
+  {id:7, brand:'Jeep', model:'Grand Cherokee Limited', year:2023, price:76999, mileage:55999, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1571987502227-7f5063b33cbe?auto=format&fit=crop&w=900&q=80'},
+  {id:8, brand:'Jeep', model:'Grand Cherokee Limited', year:2021, price:47900, mileage:62150, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=900&q=80'},
+  {id:9, brand:'Land Rover', model:'Range Rover', year:2014, price:83000, mileage:60847, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1584345604476-8ec5f82d718b?auto=format&fit=crop&w=900&q=80'},
+  {id:10, brand:'Mercedes-Benz', model:'A 200', year:2020, price:29900, mileage:82235, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=80'},
+  {id:11, brand:'Toyota', model:'Land Cruiser 200', year:2013, price:65500, mileage:166891, mileageUnit:'km', transmission:'Automático', fuel:'Diésel', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=900&q=80'},
+  {id:12, brand:'Porsche', model:'Cayenne', year:2023, price:115990, mileage:28072, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://images.pistonheads.com/nimg/47209/mceu_73425740941684170469720.jpg'},
+  {id:13, brand:'BMW', model:'325i', year:1993, price:29900, mileage:40018, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=900&q=80'},
+  {id:14, brand:'Land Rover', model:'Range Rover Evoque', year:2026, price:75900, mileage:0, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=80'},
+  {id:15, brand:'Ford', model:'Ranger XL', year:2023, price:46499, mileage:13283, mileageUnit:'km', transmission:'Manual', fuel:'Diésel', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80'},
+  {id:16, brand:'Mercedes-Benz', model:'230GE', year:1985, price:58799, mileage:70000, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1622200984790-de53e3ded5ed?auto=format&fit=crop&w=900&q=80'},
+  {id:17, brand:'Mercedes-Benz', model:'GLC 43 Coupe', year:2019, price:75000, mileage:57485, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=900&q=80'},
+  {id:18, brand:'BMW', model:'X4 xDrive', year:2015, price:46800, mileage:58734, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=900&q=80'},
+  {id:19, brand:'Chevrolet', model:'Tahoe', year:2019, price:61990, mileage:78696, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1589750602846-60028779e6bd?auto=format&fit=crop&w=900&q=80'},
+  {id:20, brand:'Mercedes-Benz', model:'G63 AMG', year:2013, price:179000, mileage:26334, mileageUnit:'km', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.unsplash.com/photo-1605816988069-b11383b50717?auto=format&fit=crop&w=900&q=80'},
+  {id:21, brand:'Honda', model:'CB650R', year:2022, price:11500, mileage:6200, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80'},
+  {id:22, brand:'Yamaha', model:'MT-07', year:2022, price:13200, mileage:4500, mileageUnit:'km', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=900&q=80'}
+];
+
+/* ─── MODAL SCROLL LOCK ─── */
+let _savedScroll=0;
+function openModal(id){
+  const v=VEHICLES.find(x=>x.id===id);
+  if(!v) return;
+  _savedScroll=window.scrollY;
+  document.getElementById('modal-img').src=v.img;
+  document.getElementById('modal-img').alt=v.brand+' '+v.model;
+  document.getElementById('modal-badge').textContent=v.brand;
+  document.getElementById('modal-title').textContent=v.brand+' '+v.model+' '+v.year;
+  document.getElementById('modal-price').textContent='Desde $'+v.price.toLocaleString();
+  const specs=[
+    {label:'Año',val:v.year},
+    {label:'Recorrido',val:v.mileage===0?'0 km':v.mileage.toLocaleString()+' '+v.mileageUnit},
+    {label:'Transmisión',val:v.transmission},
+    {label:'Combustible',val:v.fuel},
+    {label:'Ubicación',val:v.location}
+  ];
+  document.getElementById('modal-specs').innerHTML=specs.map(s=>`
+    <div class="modal-spec">
+      <div class="modal-spec-label">${s.label}</div>
+      <div class="modal-spec-val">${s.val}</div>
+    </div>`).join('');
+  const msg=encodeURIComponent(`Hola, me interesa el ${v.brand} ${v.model} ${v.year} a $${v.price.toLocaleString()}. ¿Está disponible?`);
+  document.getElementById('modal-wa').onclick=()=>window.open(`https://api.whatsapp.com/send?phone=593995393656&text=${msg}`,'_blank');
+  document.body.style.position='fixed';
+  document.body.style.top=`-${_savedScroll}px`;
+  document.body.style.width='100%';
+  document.getElementById('modal-ov').classList.add('open');
+}
+function closeModal(e,force){
+  if(force||!e||e.target===document.getElementById('modal-ov')){
+    document.getElementById('modal-ov').classList.remove('open');
+    document.body.style.position='';
+    document.body.style.top='';
+    document.body.style.width='';
+    window.scrollTo({top:_savedScroll,behavior:'instant'});
+  }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal(null,true)});
+
+/* ─── CARD BUILDER ─── */
+function buildCard(v,isFeatured=false){
+  const msg=encodeURIComponent(`Hola, me interesa el ${v.brand} ${v.model} ${v.year} a $${v.price.toLocaleString()}. ¿Está disponible?`);
+  return `
+  <div class="vcard" onclick="openModal(${v.id})">
+    <div class="vcard-img-wrap">
+      <img class="vcard-img" src="${v.img}" alt="${v.brand} ${v.model}" loading="lazy"/>
+      <span class="vcard-badge">${v.year}</span>
+      ${isFeatured?'<span class="vcard-feat-tag">Destacado</span>':''}
     </div>
-    <!-- NOSOTROS -->
-    <section id="nosotros">
-        <div class="container">
-            <div class="nosotros-inner">
-                <div class="nosotros-img reveal-left">
-                    <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUDA6pobrYNROht_yKAv60AB0IbHdi2uXfi7wWBoOTAgivSeljkts6UfXFBd4s69Chik8uDJWxpx8Whgl7eM9v0vCuDI2CKd_AtFbIj85-2KpK_iP8udqBj0ALQyHbPWhohN7ZCCr6Dm8n-Pi_7d44AiuGRbnWMkbFA=w1920" alt="Q2 Saloon showroom" onerror="this.src='https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=900&q=80'"/>
-                </div>
-                <div class="nosotros-text reveal-right">
-                    <span class="section-label">Quiénes somos</span>
-                    <h2 class="section-title">Un estándar superior desde 2015</h2>
-                    <div class="nosotros-list">
-                        <div class="nosotros-item">
-                            <div class="nosotros-dot"></div>
-                            <p><strong>Más de 10 años</strong> en el mercado automotriz premium de Quito, construyendo relaciones basadas en la confianza.</p>
-                        </div>
-                        <div class="nosotros-item">
-                            <div class="nosotros-dot"></div>
-                            <p><strong>500+ clientes satisfechos</strong> que nos han confiado una de las decisiones financieras más importantes de su vida.</p>
-                        </div>
-                        <div class="nosotros-item">
-                            <div class="nosotros-dot"></div>
-                            <p><strong>Proceso transparente</strong>: precios justos, vehículos verificados y asesoría honesta sin presiones.</p>
-                        </div>
-                        <div class="nosotros-item">
-                            <div class="nosotros-dot"></div>
-                            <p><strong>Ubicados en el norte de Quito</strong>, Av. 6 de Diciembre N42-30 y Tomás de Berlanga, de fácil acceso.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="vcard-body">
+      <div class="vcard-brand">${v.brand}</div>
+      <div class="vcard-model">${v.model}</div>
+      <div class="vcard-year">${v.transmission} · ${v.fuel}</div>
+      <div class="vcard-meta">
+        <span>${v.mileage===0?'0 km':v.mileage.toLocaleString()+' '+v.mileageUnit}</span>
+        <span>${v.location}</span>
+      </div>
+      <div class="vcard-footer">
+        <div>
+          <div class="vcard-price-label">Desde</div>
+          <div class="vcard-price">$${v.price.toLocaleString()}</div>
         </div>
-    </section>
-    <!-- CONTACTO -->
-    <section id="contacto">
-        <div class="container">
-            <div class="contact-wa-hero reveal">
-                <h2>¿Listo para encontrar tu vehículo ideal?</h2>
-                <p>Escríbenos ahora. Respuesta inmediata de lunes a sábado.</p>
-                <div class="contact-wa-btns">
-                    <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20comprar%20un%20veh%C3%ADculo" target="_blank" class="contact-wa-btn">
-                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Asesor 1 · +593 995 393 656
-                    </a>
-                    <a href="https://api.whatsapp.com/send?phone=593997929809&text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20comprar%20un%20veh%C3%ADculo" target="_blank" class="contact-wa-btn">
-                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Asesor 2 · +593 997 929 809
-                    </a>
-                </div>
-            </div>
-            <div class="contact-grid">
-                <div class="contact-info reveal-left">
-                    <h3>Información de contacto</h3>
-                    <div class="contact-info-list">
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">📍</div>
-                            <div>
-                                <div class="contact-info-label">Dirección</div>
-                                <div class="contact-info-val">Av. 6 de Diciembre N42-30 y Tomás de Berlanga, Quito</div>
-                            </div>
-                        </div>
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">📞</div>
-                            <div>
-                                <div class="contact-info-label">Teléfono</div>
-                                <div class="contact-info-val">2920205</div>
-                            </div>
-                        </div>
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">✉️</div>
-                            <div>
-                                <div class="contact-info-label">Email</div>
-                                <div class="contact-info-val">info@q2saloon.com</div>
-                            </div>
-                        </div>
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">🕐</div>
-                            <div>
-                                <div class="contact-info-label">Horario</div>
-                                <div class="contact-info-val">Lun–Vie 9:00–18:00 / Sáb 10:00–14:00</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contact-form">
-                        <h3>Envíanos un mensaje</h3>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label">Nombre</label>
-                                <input class="form-input" type="text" placeholder="Tu nombre"/>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Teléfono</label>
-                                <input class="form-input" type="tel" placeholder="+593 999 000 000"/>
-                            </div>
-                            <div class="form-group full">
-                                <label class="form-label">Email</label>
-                                <input class="form-input" type="email" placeholder="tu@email.com"/>
-                            </div>
-                            <div class="form-group full">
-                                <label class="form-label">Mensaje</label>
-                                <textarea class="form-textarea" placeholder="¿En qué vehículo estás interesado?"></textarea>
-                            </div>
-                        </div>
-                        <button class="form-submit" onclick="submitForm(this)">Enviar mensaje</button>
-                    </div>
-                </div>
-                <div class="contact-map reveal-right">
-                    <iframe src="https://maps.google.com/maps?q=-0.16698,-78.475655&z=16&output=embed" allowfullscreen loading="lazy"></iframe>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-inner">
-            <a href="#" class="footer-logo">
-                <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUCYgi8hYQadhUmMBYjHtBdR370msyzhu-YG8l6Y_0YQIqWMh6gWxsi2okNvcb0FVD0Pxa_qjr840FGFmojfsptwuC6cfLpLxhECV5fvmQXMsUY0vZ57K9aydUMXoH_QzbfX7b6Sez5xs0KdzBOhjuB6Hv3LhTpWPtUku1rNsswDXdLo_9gkoVrr417EpQki9xG0l0lSDi0P7Lo=w400" alt="Q2 Saloon" onerror="this.style.display='none'"/>
-            </a>
-            <div class="footer-links">
-                <a href="#featured">Destacados</a>
-                <a href="#inventario">Inventario</a>
-                <a href="#trust">Confianza Q2</a>
-                <a href="#contacto">Contacto</a>
-            </div>
-            <div class="footer-social">
-                <a href="https://www.facebook.com/q2saloonautos" target="_blank" title="Facebook">f</a>
-                <a href="https://www.instagram.com/q2saloonautos" target="_blank" title="Instagram">in</a>
-                <a href="https://www.youtube.com/channel/UCdUJL8k4oklT3aYGzAlbaOg" target="_blank" title="YouTube">▶</a>
-            </div>
-        </div>
-        <div class="footer-copy">
-            <p>© 2024 Q2 Saloon. Todos los derechos reservados.</p>
-            <p>Av. 6 de Diciembre N42-30 y Tomás de Berlanga, Quito, Ecuador</p>
-        </div>
-    </footer>
-    <script>
-        /* ─── VEHICLE DATA ─── */
-        const VEHICLES = [
-            {id:1,brand:'BMW',model:'320i M Sport',year:2022,price:43500,mileage:24000,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:true,img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80'},
-            {id:2,brand:'Mercedes-Benz',model:'GLA 200 AMG Line',year:2021,price:54000,mileage:32000,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:true,img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=80'},
-            {id:3,brand:'Toyota',model:'Land Cruiser Prado',year:2021,price:68000,mileage:42000,transmission:'Automático',fuel:'Diésel',location:'Quito',type:'vehiculo',featured:true,img:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80'},
-            {id:4,brand:'Audi',model:'Q5 Quattro S-Line',year:2022,price:59500,mileage:18000,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=80'},
-            {id:5,brand:'Volkswagen',model:'Tiguan Highline 4Motion',year:2023,price:38900,mileage:8500,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=900&q=80'},
-            {id:6,brand:'Jeep',model:'Grand Cherokee Overland',year:2020,price:47000,mileage:54000,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1571987502227-7f5063b33cbe?auto=format&fit=crop&w=900&q=80'},
-            {id:7,brand:'Honda',model:'CB650R Neo Sports Café',year:2022,price:11500,mileage:6200,transmission:'Manual',fuel:'Gasolina',location:'Quito',type:'motocicleta',featured:false,img:'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80'},
-            {id:8,brand:'Yamaha',model:'MT-07 Hyper Naked',year:2022,price:13200,mileage:4500,transmission:'Manual',fuel:'Gasolina',location:'Quito',type:'motocicleta',featured:false,img:'https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=900&q=80'},
-            {id:9,brand:'Toyota',model:'Sequoia Platinum',year:2019,price:85000,mileage:26220,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80'},
-            {id:10,brand:'BMW',model:'X6 M Competition',year:2022,price:177000,mileage:17360,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:true,img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80'},
-            {id:11,brand:'Mercedes-Benz',model:'G63 AMG',year:2017,price:195990,mileage:64147,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:true,img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=80'},
-            {id:12,brand:'BMW',model:'320i',year:2020,price:35500,mileage:88687,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80'},
-            {id:13,brand:'Land Rover',model:'Range Rover Autobiography',year:2015,price:79990,mileage:74637,transmission:'Automático',fuel:'Diésel',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80'},
-            {id:14,brand:'Jeep',model:'Grand Cherokee Limited',year:2023,price:76999,mileage:55999,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1571987502227-7f5063b33cbe?auto=format&fit=crop&w=900&q=80'},
-            {id:15,brand:'Jeep',model:'Grand Cherokee Limited',year:2021,price:47900,mileage:62150,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1571987502227-7f5063b33cbe?auto=format&fit=crop&w=900&q=80'},
-            {id:16,brand:'Land Rover',model:'Range Rover',year:2014,price:83000,mileage:60847,transmission:'Automático',fuel:'Diésel',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80'},
-            {id:17,brand:'Mercedes-Benz',model:'A 200',year:2020,price:29900,mileage:82235,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=80'},
-            {id:18,brand:'Toyota',model:'Land Cruiser 200',year:2013,price:65500,mileage:166891,transmission:'Automático',fuel:'Diésel',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80'},
-            {id:19,brand:'Porsche',model:'Cayenne',year:2023,price:115990,mileage:28072,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:true,img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80'},
-            {id:20,brand:'BMW',model:'325i',year:1993,price:29900,mileage:40018,transmission:'Manual',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80'},
-            {id:21,brand:'Land Rover',model:'Range Rover Evoque',year:2026,price:75900,mileage:0,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80'},
-            {id:22,brand:'Ford',model:'Ranger XL',year:2023,price:46499,mileage:13283,transmission:'Manual',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=900&q=80'},
-            {id:23,brand:'Mercedes-Benz',model:'230GE',year:1985,price:58799,mileage:70000,transmission:'Manual',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=80'},
-            {id:24,brand:'Mercedes-Benz',model:'GLC 43 Coupe',year:2019,price:75000,mileage:57485,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=80'},
-            {id:25,brand:'BMW',model:'X4 xDrive',year:2015,price:46800,mileage:58734,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80'},
-            {id:26,brand:'Chevrolet',model:'Tahoe',year:2019,price:61990,mileage:78696,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:false,img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80'},
-            {id:27,brand:'Mercedes-Benz',model:'G63 AMG',year:2013,price:179000,mileage:26334,transmission:'Automático',fuel:'Gasolina',location:'Quito',type:'vehiculo',featured:true,img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=80'}
-        ];
-        /* ─── MODAL SCROLL LOCK ─── */
-        let _savedScroll=0;
-        function openModal(id){
-            const v=VEHICLES.find(x=>x.id===id);
-            if(!v) return;
-            _savedScroll=window.scrollY;
-            document.getElementById('modal-img').src=v.img;
-            document.getElementById('modal-img').alt=v.brand+' '+v.model;
-            document.getElementById('modal-badge').textContent=v.brand;
-            document.getElementById('modal-title').textContent=v.brand+' '+v.model+' '+v.year;
-            document.getElementById('modal-price').textContent='Desde $'+v.price.toLocaleString();
-            const specs=[
-                {label:'Año',val:v.year},
-                {label:'Kilometraje',val:v.mileage.toLocaleString()+' km'},
-                {label:'Transmisión',val:v.transmission},
-                {label:'Combustible',val:v.fuel},
-                {label:'Ubicación',val:v.location}
-            ];
-            document.getElementById('modal-specs').innerHTML=specs.map(s=>`<div class="modal-spec"><div class="modal-spec-label">${s.label}</div><div class="modal-spec-val">${s.val}</div></div>`).join('');
-            const msg=encodeURIComponent(`Hola, me interesa el ${v.brand} ${v.model} ${v.year} a $${v.price.toLocaleString()}. ¿Está disponible?`);
-            document.getElementById('modal-wa').onclick=()=>window.open(`https://api.whatsapp.com/send?phone=593995393656&text=${msg}`,'_blank');
-            document.body.style.position='fixed';
-            document.body.style.top=`-${_savedScroll}px`;
-            document.body.style.width='100%';
-            document.getElementById('modal-ov').classList.add('open');
-        }
-        function closeModal(e,force){
-            if(force||!e||e.target===document.getElementById('modal-ov')){
-                document.getElementById('modal-ov').classList.remove('open');
-                document.body.style.position='';
-                document.body.style.top='';
-                document.body.style.width='';
-                window.scrollTo({top:_savedScroll,behavior:'instant'});
-            }
-        }
-        document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal(null,true)});
-        /* ─── CARD BUILDER ─── */
-        function buildCard(v,isFeatured=false){
-            const msg=encodeURIComponent(`Hola, me interesa el ${v.brand} ${v.model} ${v.year} a $${v.price.toLocaleString()}. ¿Está disponible?`);
-            return `<div class="vcard" onclick="openModal(${v.id})">
-                <div class="vcard-img-wrap">
-                    <img class="vcard-img" src="${v.img}" alt="${v.brand} ${v.model}" loading="lazy"/>
-                    <span class="vcard-badge">${v.year}</span>
-                    ${isFeatured?'<span class="vcard-feat-tag">Destacado</span>':''}
-                </div>
-                <div class="vcard-body">
-                    <div class="vcard-brand">${v.brand}</div>
-                    <div class="vcard-model">${v.model}</div>
-                    <div class="vcard-year">${v.transmission} · ${v.fuel}</div>
-                    <div class="vcard-meta">
-                        <span>${v.mileage.toLocaleString()} km</span>
-                        <span>${v.location}</span>
-                    </div>
-                    <div class="vcard-footer">
-                        <div>
-                            <div class="vcard-price-label">Desde</div>
-                            <div class="vcard-price">$${v.price.toLocaleString()}</div>
-                        </div>
-                        <button class="vcard-wa" onclick="event.stopPropagation();window.open('https://api.whatsapp.com/send?phone=593995393656&text=${msg}','_blank')">
-                            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                            Consultar
-                        </button>
-                    </div>
-                </div>
-            </div>`;
-        }
-        /* ─── FEATURED RENDER ─── */
-        function renderFeatured(){
-            const featured=VEHICLES.filter(v=>v.featured&&v.type==='vehiculo');
-            document.getElementById('featured-grid').innerHTML=featured.map(v=>buildCard(v,true)).join('');
-        }
-        /* ─── INVENTORY RENDER ─── */
-        function renderInventory(){
-            const brand=document.getElementById('f-brand').value;
-            const year=document.getElementById('f-year').value;
-            const price=document.getElementById('f-price').value;
-            let cars=VEHICLES.filter(v=>v.type==='vehiculo');
-            if(brand) cars=cars.filter(v=>v.brand===brand);
-            if(year) cars=cars.filter(v=>v.year===parseInt(year));
-            if(price){
-                const[min,max]=price.split('-').map(Number);
-                cars=cars.filter(v=>v.price>=min&&v.price<=max);
-            }
-            const grid=document.getElementById('inventory-grid');
-            if(!cars.length){
-                grid.innerHTML=`<div class="no-results"><h3>Sin resultados</h3><p>Intenta con otros filtros o contáctanos para más opciones.</p></div>`;
-            }else{
-                grid.innerHTML=cars.map(v=>buildCard(v)).join('');
-            }
-        }
-        /* ─── MOTOS RENDER ─── */
-        function renderMotos(){
-            const motos=VEHICLES.filter(v=>v.type==='motocicleta');
-            document.getElementById('motos-grid').innerHTML=motos.map(v=>buildCard(v)).join('');
-        }
-        /* ─── POPULATE FILTERS ─── */
-        function initFilters(){
-            const cars=VEHICLES.filter(v=>v.type==='vehiculo');
-            const brands=[...new Set(cars.map(v=>v.brand))].sort();
-            const years=[...new Set(cars.map(v=>v.year))].sort((a,b)=>b-a);
-            const bSel=document.getElementById('f-brand');
-            const ySel=document.getElementById('f-year');
-            brands.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;bSel.appendChild(o)});
-            years.forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;ySel.appendChild(o)});
-        }
-        /* ─── NAV SCROLL ─── */
-        window.addEventListener('scroll',()=>{
-            const nav=document.getElementById('main-nav');
-            if(window.scrollY>50) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
-            // sticky wa
-            const wa=document.getElementById('sticky-wa');
-            if(window.scrollY>window.innerHeight*0.7) wa.classList.add('show');
-            else wa.classList.remove('show');
-        },{ passive:true });
-        /* ─── MOBILE MENU ─── */
-        document.getElementById('ham').addEventListener('click',()=>{
-            document.getElementById('mob-menu').classList.add('open');
-        });
-        document.getElementById('mob-close').addEventListener('click',()=>{
-            document.getElementById('mob-menu').classList.remove('open');
-        });
-        function closeMob(){
-            document.getElementById('mob-menu').classList.remove('open');
-        }
-        /* ─── COUNTER ANIMATION ─── */
-        function animCounter(el,target,suffix='',dur=1800){
-            let start=null;
-            const step=ts=>{
-                if(!start) start=ts;
-                const p=Math.min((ts-start)/dur,1);
-                const ease=1-Math.pow(1-p,3);
-                el.textContent=Math.round(ease*target)+suffix;
-                if(p<1) requestAnimationFrame(step);
-            };
-            requestAnimationFrame(step);
-        }
-        /* ─── INTERSECTION OBSERVER ─── */
-        const revealObs=new IntersectionObserver(entries=>{
-            entries.forEach(e=>{
-                if(e.isIntersecting) e.target.classList.add('revealed');
-            });
-        },{threshold:0.12});
-        document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revealObs.observe(el));
-        let countersStarted=false;
-        const counterObs=new IntersectionObserver(entries=>{
-            entries.forEach(e=>{
-                if(e.isIntersecting&&!countersStarted){
-                    countersStarted=true;
-                    animCounter(document.getElementById('stat1'),200,'+');
-                    animCounter(document.getElementById('stat2'),10,'+');
-                    animCounter(document.getElementById('stat3'),500,'+');
-                }
-            });
-        },{threshold:0.5});
-        counterObs.observe(document.querySelector('.hero'));
-        /* ─── FORM ─── */
-        function submitForm(btn){
-            btn.textContent='¡Mensaje enviado!';
-            btn.style.background='var(--green)';
-            btn.style.color='#fff';
-            setTimeout(()=>{btn.textContent='Enviar mensaje';btn.style.background='';btn.style.color=''},3000);
-        }
-        /* ─── INIT ─── */
-        initFilters();
-        renderFeatured();
-        renderInventory();
-        renderMotos();
-        /* ─── RE-OBSERVE AFTER RENDER ─── */
-        setTimeout(()=>{
-            document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>{
-                if(!el.classList.contains('revealed')) revealObs.observe(el);
-            });
-        },100);
-    </script>
+        <button class="vcard-wa" onclick="event.stopPropagation();window.open('https://api.whatsapp.com/send?phone=593995393656&text=${msg}','_blank')">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ─── FEATURED RENDER ─── */
+function renderFeatured(){
+  const featured=VEHICLES.filter(v=>v.featured&&v.type==='vehiculo');
+  document.getElementById('featured-grid').innerHTML=featured.map(v=>buildCard(v,true)).join('');
+}
+
+/* ─── INVENTORY RENDER ─── */
+function renderInventory(){
+  const brand=document.getElementById('f-brand').value;
+  const year=document.getElementById('f-year').value;
+  const price=document.getElementById('f-price').value;
+  let cars=VEHICLES.filter(v=>v.type==='vehiculo');
+  if(brand) cars=cars.filter(v=>v.brand===brand);
+  if(year) cars=cars.filter(v=>v.year===parseInt(year));
+  if(price){
+    const[min,max]=price.split('-').map(Number);
+    cars=cars.filter(v=>v.price>=min&&v.price<=max);
+  }
+  const grid=document.getElementById('inventory-grid');
+  if(!cars.length){
+    grid.innerHTML=`<div class="no-results"><h3>Sin resultados</h3><p>Intenta con otros filtros o contáctanos para más opciones.</p></div>`;
+  }else{
+    grid.innerHTML=cars.map(v=>buildCard(v)).join('');
+  }
+}
+
+/* ─── MOTOS RENDER ─── */
+function renderMotos(){
+  const motos=VEHICLES.filter(v=>v.type==='motocicleta');
+  document.getElementById('motos-grid').innerHTML=motos.map(v=>buildCard(v)).join('');
+}
+
+/* ─── POPULATE FILTERS ─── */
+function initFilters(){
+  const cars=VEHICLES.filter(v=>v.type==='vehiculo');
+  const brands=[...new Set(cars.map(v=>v.brand))].sort();
+  const years=[...new Set(cars.map(v=>v.year))].sort((a,b)=>b-a);
+  const bSel=document.getElementById('f-brand');
+  const ySel=document.getElementById('f-year');
+  brands.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;bSel.appendChild(o)});
+  years.forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;ySel.appendChild(o)});
+}
+
+/* ─── NAV SCROLL ─── */
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('main-nav');
+  if(window.scrollY>50) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+  // sticky wa
+  const wa=document.getElementById('sticky-wa');
+  if(window.scrollY>window.innerHeight*0.7) wa.classList.add('show');
+  else wa.classList.remove('show');
+},{ passive:true });
+
+/* ─── MOBILE MENU ─── */
+document.getElementById('ham').addEventListener('click',()=>{
+  document.getElementById('mob-menu').classList.add('open');
+});
+document.getElementById('mob-close').addEventListener('click',()=>{
+  document.getElementById('mob-menu').classList.remove('open');
+});
+function closeMob(){
+  document.getElementById('mob-menu').classList.remove('open');
+}
+
+/* ─── COUNTER ANIMATION ─── */
+function animCounter(el,target,suffix='',dur=1800){
+  let start=null;
+  const step=ts=>{
+    if(!start) start=ts;
+    const p=Math.min((ts-start)/dur,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(ease*target)+suffix;
+    if(p<1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ─── INTERSECTION OBSERVER ─── */
+const revealObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('revealed');
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revealObs.observe(el));
+
+let countersStarted=false;
+const counterObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting&&!countersStarted){
+      countersStarted=true;
+      animCounter(document.getElementById('stat1'),200,'+');
+      animCounter(document.getElementById('stat2'),10,'+');
+      animCounter(document.getElementById('stat3'),500,'+');
+    }
+  });
+},{threshold:0.5});
+counterObs.observe(document.querySelector('.hero'));
+
+/* ─── FORM ─── */
+function submitForm(btn){
+  btn.textContent='¡Mensaje enviado!';
+  btn.style.background='var(--green)';
+  btn.style.color='#fff';
+  setTimeout(()=>{btn.textContent='Enviar mensaje';btn.style.background='';btn.style.color=''},3000);
+}
+
+/* ─── INIT ─── */
+initFilters();
+renderFeatured();
+renderInventory();
+renderMotos();
+
+/* ─── RE-OBSERVE AFTER RENDER ─── */
+setTimeout(()=>{
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>{
+    if(!el.classList.contains('revealed')) revealObs.observe(el);
+  });
+},100);
+</script>
 </body>
-</html><!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>Q2 Saloon — Vehículos Premium | Quito Ecuador</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap" rel="stylesheet"/>
-    <style>
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        :root{
-            --bg:#07101e;
-            --surface:#0b1729;
-            --card:#0e1d33;
-            --card2:#121f38;
-            --line:rgba(200,184,154,0.1);
-            --line-h:rgba(200,184,154,0.28);
-            --beige:#c8b89a;
-            --beige-d:#a89070;
-            --beige-l:#dfd0b4;
-            --white:#f0ebe2;
-            --gray-l:#8fa5c4;
-            --gray:#506480;
-            --green:#25D366;
-            --radius:12px;
-            --radius-lg:22px;
-            --ease:cubic-bezier(0.22,1,0.36,1);
-        }
-        html{scroll-behavior:smooth;font-size:16px}
-        body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-optical-sizing:auto;overflow-x:hidden;line-height:1.6}
-        a{color:inherit;text-decoration:none}
-        img{display:block;max-width:100%}
-        button{cursor:pointer;font-family:inherit}
-        /* ─── SCROLLBAR ─── */
-        ::-webkit-scrollbar{width:6px}
-        ::-webkit-scrollbar-track{background:var(--bg)}
-        ::-webkit-scrollbar-thumb{background:var(--beige-d);border-radius:3px}
-        /* ─── FLOATING WA ─── */
-        .wa-float{
-            position:fixed;bottom:28px;right:28px;z-index:9000;
-            width:56px;height:56px;border-radius:50%;
-            background:var(--green);display:flex;align-items:center;justify-content:center;
-            box-shadow:0 4px 24px rgba(37,211,102,0.45);transition:transform 0.3s var(--ease),box-shadow 0.3s;
-        }
-        .wa-float:hover{transform:scale(1.12);box-shadow:0 6px 32px rgba(37,211,102,0.6)}
-        .wa-float svg{width:28px;height:28px;fill:#fff}
-        /* ─── NAV ─── */
-        nav{
-            position:fixed;top:0;left:0;right:0;z-index:8000;
-            display:flex;align-items:center;justify-content:space-between;
-            padding:0 40px;height:68px;
-            transition:background 0.4s,backdrop-filter 0.4s,border-bottom 0.4s;
-        }
-        nav.scrolled{
-            background:rgba(7,16,30,0.88);backdrop-filter:blur(18px);
-            border-bottom:1px solid var(--line);
-        }
-        .nav-logo img{height:40px;object-fit:contain}
-        .nav-links{display:flex;gap:32px;list-style:none}
-        .nav-links a{font-size:0.875rem;font-weight:500;letter-spacing:0.04em;color:rgba(240,235,226,0.78);transition:color 0.2s}
-        .nav-links a:hover{color:var(--beige)}
-        .nav-right{display:flex;align-items:center;gap:16px}
-        .nav-wa{
-            display:flex;align-items:center;gap:8px;
-            background:var(--green);color:#fff;font-size:0.82rem;font-weight:600;
-            padding:8px 16px;border-radius:99px;transition:opacity 0.2s;
-        }
-        .nav-wa:hover{opacity:0.88}
-        .nav-wa svg{width:16px;height:16px;fill:#fff}
-        .nav-cta{
-            background:transparent;border:1px solid var(--beige);color:var(--beige);
-            font-size:0.82rem;font-weight:500;padding:8px 18px;border-radius:99px;
-            transition:background 0.2s,color 0.2s;
-        }
-        .nav-cta:hover{background:var(--beige);color:var(--bg)}
-        .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
-        .hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:0.3s}
-        /* ─── MOBILE MENU ─── */
-        .mobile-menu{
-            display:none;position:fixed;inset:0;z-index:7900;
-            background:rgba(7,16,30,0.97);backdrop-filter:blur(20px);
-            flex-direction:column;align-items:center;justify-content:center;gap:32px;
-        }
-        .mobile-menu.open{display:flex}
-        .mobile-menu a{font-size:1.5rem;font-weight:300;color:var(--white);letter-spacing:0.06em}
-        .mobile-menu a:hover{color:var(--beige)}
-        .mobile-menu-close{
-            position:absolute;top:24px;right:28px;background:none;border:none;
-            color:var(--white);font-size:2rem;line-height:1;
-        }
-        /* ─── MODAL ─── */
-        .modal-ov{
-            position:fixed;inset:0;z-index:9500;
-            background:rgba(7,16,30,0.92);backdrop-filter:blur(12px);
-            display:none;align-items:center;justify-content:center;padding:20px;
-        }
-        .modal-ov.open{display:flex}
-        .modal-box{
-            background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
-            max-width:860px;width:100%;max-height:92vh;overflow-y:auto;position:relative;
-        }
-        .modal-close{
-            position:sticky;top:12px;left:100%;margin-right:16px;
-            background:rgba(255,255,255,0.08);border:none;color:var(--white);
-            width:36px;height:36px;border-radius:50%;font-size:1.2rem;
-            display:flex;align-items:center;justify-content:center;
-            transition:background 0.2s;z-index:1;
-        }
-        .modal-close:hover{background:rgba(255,255,255,0.15)}
-        .modal-img{width:100%;height:340px;object-fit:cover;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
-        .modal-body{padding:32px}
-        .modal-badge{
-            display:inline-block;background:rgba(200,184,154,0.12);color:var(--beige);
-            font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
-            padding:4px 12px;border-radius:99px;margin-bottom:12px;
-        }
-        .modal-title{font-size:1.8rem;font-weight:700;margin-bottom:6px}
-        .modal-price{font-size:2rem;font-weight:800;color:var(--beige);margin-bottom:24px}
-        .modal-specs{
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;
-            margin-bottom:28px;
-        }
-        .modal-spec{background:var(--card);border-radius:var(--radius);padding:14px 16px}
-        .modal-spec-label{font-size:0.72rem;color:var(--gray-l);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
-        .modal-spec-val{font-size:0.95rem;font-weight:600}
-        .modal-wa{
-            display:flex;align-items:center;justify-content:center;gap:10px;
-            background:var(--green);color:#fff;font-size:1rem;font-weight:700;
-            width:100%;padding:16px;border-radius:var(--radius);border:none;
-            transition:opacity 0.2s;
-        }
-        .modal-wa:hover{opacity:0.88}
-        .modal-wa svg{width:22px;height:22px;fill:#fff}
-        /* ─── HERO ─── */
-        .hero{
-            position:relative;height:100vh;min-height:640px;
-            display:flex;align-items:flex-end;padding-bottom:80px;overflow:hidden;
-        }
-        .hero-bg-wrap{
-            position:absolute;inset:0;overflow:hidden;
-        }
-        .hero-bg{
-            width:100%;height:100%;object-fit:cover;object-position:center;
-            animation:kenBurns 18s ease-in-out infinite alternate;transform-origin:center center;
-        }
-        @keyframes kenBurns{
-            0%{transform:scale(1.06) translate(0%,0%)}
-            100%{transform:scale(1.0) translate(-1%,-0.5%)}
-        }
-        .hero-overlay{
-            position:absolute;inset:0;
-            background:linear-gradient(to top,rgba(7,16,30,0.95) 0%,rgba(7,16,30,0.5) 50%,rgba(7,16,30,0.18) 100%);
-        }
-        .hero-content{
-            position:relative;z-index:1;max-width:780px;padding:0 40px;
-        }
-        .hero-badge{
-            display:inline-block;background:rgba(200,184,154,0.15);color:var(--beige);
-            font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
-            padding:6px 16px;border-radius:99px;margin-bottom:20px;border:1px solid var(--line-h);
-            animation:heroUp 0.9s var(--ease) 0.2s both;
-        }
-        .hero-title{
-            font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:800;line-height:1.08;
-            letter-spacing:-0.02em;margin-bottom:18px;
-            animation:heroUp 0.9s var(--ease) 0.5s both;
-        }
-        .hero-title em{font-style:normal;color:var(--beige)}
-        .hero-sub{
-            font-size:1.05rem;font-weight:300;color:var(--gray-l);max-width:520px;
-            margin-bottom:32px;
-            animation:heroUp 0.9s var(--ease) 0.8s both;
-        }
-        .hero-actions{
-            display:flex;gap:14px;flex-wrap:wrap;
-            animation:heroUp 0.9s var(--ease) 1.05s both;
-        }
-        @keyframes heroUp{
-            from{opacity:0;transform:translateY(22px)}
-            to{opacity:1;transform:translateY(0)}
-        }
-        .btn-primary{
-            background:var(--beige);color:var(--bg);font-weight:700;font-size:0.92rem;
-            padding:14px 28px;border-radius:99px;border:none;
-            transition:background 0.2s,transform 0.2s;letter-spacing:0.02em;
-        }
-        .btn-primary:hover{background:var(--beige-l);transform:translateY(-1px)}
-        .btn-ghost{
-            background:transparent;border:1px solid rgba(240,235,226,0.35);color:var(--white);
-            font-size:0.92rem;font-weight:500;padding:14px 28px;border-radius:99px;
-            transition:border-color 0.2s,background 0.2s;
-        }
-        .btn-ghost:hover{border-color:var(--beige);background:rgba(200,184,154,0.08)}
-        .hero-stats{
-            position:absolute;bottom:30px;right:40px;z-index:1;
-            display:flex;gap:40px;
-            animation:heroUp 0.9s var(--ease) 1.3s both;
-        }
-        .hero-stat{text-align:right}
-        .hero-stat-num{font-size:1.8rem;font-weight:800;color:var(--beige);line-height:1}
-        .hero-stat-label{font-size:0.72rem;color:var(--gray-l);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
-        .scroll-hint{
-            position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:1;
-            display:flex;flex-direction:column;align-items:center;gap:6px;
-            color:var(--gray);font-size:0.7rem;letter-spacing:0.1em;
-            animation:heroUp 0.9s var(--ease) 1.6s both;
-        }
-        .scroll-hint-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--beige),transparent)}
-        /* ─── MARQUEE ─── */
-        .marquee-strip{
-            background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-            padding:16px 0;overflow:hidden;
-        }
-        .marquee-track{
-            display:flex;gap:48px;width:max-content;
-            animation:marquee 22s linear infinite;
-        }
-        .marquee-track:hover{animation-play-state:paused}
-        @keyframes marquee{
-            0%{transform:translateX(0)}
-            100%{transform:translateX(-50%)}
-        }
-        .marquee-item{font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);white-space:nowrap}
-        .marquee-sep{color:var(--beige);opacity:0.4}
-        /* ─── STICKY WA BAR ─── */
-        .sticky-wa{
-            position:fixed;bottom:0;left:0;right:0;z-index:7800;
-            background:rgba(7,16,30,0.95);backdrop-filter:blur(12px);
-            border-top:1px solid var(--line);
-            padding:14px 40px;
-            display:flex;align-items:center;justify-content:space-between;gap:16px;
-            transform:translateY(100%);transition:transform 0.5s var(--ease);
-        }
-        .sticky-wa.show{transform:translateY(0)}
-        .sticky-wa-text{font-size:0.9rem;color:var(--gray-l)}
-        .sticky-wa-text strong{color:var(--white)}
-        .sticky-wa-btns{display:flex;gap:10px}
-        .sticky-wa-btn{
-            display:flex;align-items:center;gap:8px;
-            background:var(--green);color:#fff;font-size:0.82rem;font-weight:700;
-            padding:10px 18px;border-radius:99px;border:none;white-space:nowrap;
-            transition:opacity 0.2s;
-        }
-        .sticky-wa-btn:hover{opacity:0.88}
-        .sticky-wa-btn svg{width:16px;height:16px;fill:#fff}
-        /* ─── SECTIONS ─── */
-        section{padding:100px 40px}
-        .section-label{
-            font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
-            color:var(--beige);margin-bottom:12px;
-        }
-        .section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;line-height:1.12;letter-spacing:-0.02em}
-        .section-sub{font-size:1rem;color:var(--gray-l);margin-top:12px;max-width:540px}
-        .section-head{margin-bottom:56px}
-        .container{max-width:1280px;margin:0 auto}
-        /* ─── VEHICLE CARD ─── */
-        .vcard{
-            background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
-            overflow:hidden;cursor:pointer;transition:transform 0.3s var(--ease),box-shadow 0.3s,border-color 0.3s;
-        }
-        .vcard:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.5);border-color:var(--line-h)}
-        .vcard-img-wrap{position:relative;height:220px;overflow:hidden}
-        .vcard-img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s var(--ease)}
-        .vcard:hover .vcard-img{transform:scale(1.05)}
-        .vcard-badge{
-            position:absolute;top:12px;left:12px;
-            background:rgba(7,16,30,0.78);backdrop-filter:blur(6px);
-            color:var(--beige);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
-            padding:4px 10px;border-radius:99px;border:1px solid var(--line-h);
-        }
-        .vcard-feat-tag{
-            position:absolute;top:12px;right:12px;
-            background:var(--beige);color:var(--bg);
-            font-size:0.65rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
-            padding:4px 10px;border-radius:99px;
-        }
-        .vcard-body{padding:20px}
-        .vcard-brand{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-l);margin-bottom:4px}
-        .vcard-model{font-size:1.1rem;font-weight:700;margin-bottom:4px;line-height:1.2}
-        .vcard-year{font-size:0.82rem;color:var(--gray);margin-bottom:14px}
-        .vcard-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-        .vcard-meta span{
-            font-size:0.72rem;color:var(--gray-l);
-            background:rgba(255,255,255,0.04);padding:3px 8px;border-radius:6px;
-        }
-        .vcard-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:14px}
-        .vcard-price-label{font-size:0.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em}
-        .vcard-price{font-size:1.25rem;font-weight:800;color:var(--beige)}
-        .vcard-wa{
-            display:flex;align-items:center;gap:6px;
-            background:var(--green);color:#fff;font-size:0.75rem;font-weight:700;
-            padding:8px 14px;border-radius:99px;border:none;
-            transition:opacity 0.2s;flex-shrink:0;
-        }
-        .vcard-wa:hover{opacity:0.88}
-        .vcard-wa svg{width:14px;height:14px;fill:#fff}
-        /* ─── FEATURED SECTION ─── */
-        #featured{background:var(--surface);border-top:1px solid var(--line)}
-        .featured-grid{
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;
-        }
-        /* ─── FILTERS ─── */
-        .filters{
-            display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;
-            padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
-        }
-        .filter-select{
-            background:var(--card);border:1px solid var(--line);color:var(--white);
-            font-family:inherit;font-size:0.85rem;padding:10px 16px;border-radius:var(--radius);
-            flex:1;min-width:160px;appearance:none;
-            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238fa5c4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat:no-repeat;background-position:right 12px center;
-            padding-right:36px;cursor:pointer;transition:border-color 0.2s;
-        }
-        .filter-select:focus{outline:none;border-color:var(--beige)}
-        .inventory-grid{
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;
-        }
-        .no-results{
-            grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gray);
-        }
-        .no-results h3{font-size:1.2rem;margin-bottom:8px;color:var(--white)}
-        /* ─── TRUST SECTION ─── */
-        #trust{background:linear-gradient(135deg,var(--surface) 0%,var(--bg) 100%);border-top:1px solid var(--line)}
-        .trust-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
-        .trust-card{background:var(--surface);padding:48px 36px;transition:background 0.3s}
-        .trust-card:hover{background:var(--card)}
-        .trust-icon{font-size:2.4rem;margin-bottom:20px}
-        .trust-title{font-size:1.2rem;font-weight:700;margin-bottom:10px}
-        .trust-desc{font-size:0.9rem;color:var(--gray-l);line-height:1.65}
-        /* ─── VIDEO SECTION ─── */
-        #video{
-            position:relative;padding:0;height:520px;
-            display:flex;align-items:center;justify-content:center;overflow:hidden;
-            background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-        }
-        .video-bg{
-            position:absolute;inset:0;
-            background:url('https://lh3.googleusercontent.com/sitesv/AA5AbUDA6pobrYNROht_yKAv60AB0IbHdi2uXfi7wWBoOTAgivSeljkts6UfXFBd4s69Chik8uDJWxpx8Whgl7eM9v0vCuDI2CKd_AtFbIj85-2KpK_iP8udqBj0ALQyHbPWhohN7ZCCr6Dm8n-Pi_7d44AiuGRbnWMkbFA=w1920') center/cover no-repeat;
-            filter:brightness(0.25);
-        }
-        .video-content{position:relative;z-index:1;text-align:center;padding:40px}
-        .video-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:16px;letter-spacing:-0.02em}
-        .video-sub{font-size:1rem;color:var(--gray-l);margin-bottom:32px}
-        .video-btn{
-            display:inline-flex;align-items:center;gap:12px;
-            background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:var(--white);
-            font-size:0.95rem;font-weight:600;
-            padding:16px 32px;border-radius:99px;
-            backdrop-filter:blur(8px);transition:background 0.2s,transform 0.2s;
-        }
-        .video-btn:hover{background:rgba(255,255,255,0.18);transform:scale(1.03)}
-        .video-play{
-            width:48px;height:48px;background:var(--beige);border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-        }
-        .video-play svg{width:18px;height:18px;fill:var(--bg);margin-left:3px}
-        /* ─── NOSOTROS ─── */
-        #nosotros{background:var(--surface);border-top:1px solid var(--line)}
-        .nosotros-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-        .nosotros-img{border-radius:var(--radius-lg);overflow:hidden;height:460px}
-        .nosotros-img img{width:100%;height:100%;object-fit:cover}
-        .nosotros-text .section-label{display:block}
-        .nosotros-list{margin-top:28px;display:flex;flex-direction:column;gap:16px}
-        .nosotros-item{display:flex;gap:14px;align-items:flex-start}
-        .nosotros-dot{
-            width:8px;height:8px;border-radius:50%;background:var(--beige);
-            flex-shrink:0;margin-top:6px;
-        }
-        .nosotros-item p{font-size:0.9rem;color:var(--gray-l);line-height:1.6}
-        .nosotros-item strong{color:var(--white)}
-        /* ─── CONTACT ─── */
-        #contacto{background:var(--bg);border-top:1px solid var(--line)}
-        .contact-wa-hero{
-            background:linear-gradient(135deg,#0d2e1a 0%,#0a1f12 100%);
-            border:1px solid rgba(37,211,102,0.2);border-radius:var(--radius-lg);
-            padding:48px 40px;text-align:center;margin-bottom:64px;
-        }
-        .contact-wa-hero h2{font-size:1.8rem;font-weight:800;margin-bottom:10px}
-        .contact-wa-hero p{color:var(--gray-l);margin-bottom:28px}
-        .contact-wa-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-        .contact-wa-btn{
-            display:flex;align-items:center;gap:10px;
-            background:var(--green);color:#fff;font-size:0.95rem;font-weight:700;
-            padding:14px 26px;border-radius:99px;border:none;transition:opacity 0.2s;
-        }
-        .contact-wa-btn:hover{opacity:0.88}
-        .contact-wa-btn svg{width:20px;height:20px;fill:#fff}
-        .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
-        .contact-info h3{font-size:1.2rem;font-weight:700;margin-bottom:24px}
-        .contact-info-list{display:flex;flex-direction:column;gap:18px}
-        .contact-info-item{display:flex;gap:14px;align-items:flex-start}
-        .contact-info-icon{
-            width:40px;height:40px;background:var(--card);border:1px solid var(--line);
-            border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
-            font-size:1.1rem;
-        }
-        .contact-info-label{font-size:0.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
-        .contact-info-val{font-size:0.9rem;font-weight:500}
-        .contact-map{border-radius:var(--radius-lg);overflow:hidden;height:100%;min-height:320px;border:1px solid var(--line)}
-        .contact-map iframe{width:100%;height:100%;min-height:320px;border:none;filter:grayscale(1) invert(1) hue-rotate(180deg)}
-        .contact-form{margin-top:48px}
-        .contact-form h3{font-size:1.2rem;font-weight:700;margin-bottom:24px}
-        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-        .form-group{display:flex;flex-direction:column;gap:6px}
-        .form-group.full{grid-column:1/-1}
-        .form-label{font-size:0.75rem;font-weight:500;color:var(--gray-l);letter-spacing:0.04em}
-        .form-input,.form-textarea{
-            background:var(--card);border:1px solid var(--line);color:var(--white);
-            font-family:inherit;font-size:0.9rem;padding:12px 16px;border-radius:var(--radius);
-            transition:border-color 0.2s;
-        }
-        .form-textarea{resize:vertical;min-height:100px}
-        .form-input:focus,.form-textarea:focus{outline:none;border-color:var(--beige)}
-        .form-submit{
-            background:var(--beige);color:var(--bg);font-size:0.95rem;font-weight:700;
-            padding:14px 32px;border-radius:99px;border:none;margin-top:8px;
-            transition:background 0.2s;
-        }
-        .form-submit:hover{background:var(--beige-l)}
-        /* ─── FOOTER ─── */
-        footer{
-            background:var(--surface);border-top:1px solid var(--line);
-            padding:48px 40px 32px;
-        }
-        .footer-inner{
-            max-width:1280px;margin:0 auto;
-            display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
-        }
-        .footer-logo img{height:36px;object-fit:contain;opacity:0.85}
-        .footer-links{display:flex;gap:28px}
-        .footer-links a{font-size:0.82rem;color:var(--gray);transition:color 0.2s}
-        .footer-links a:hover{color:var(--beige)}
-        .footer-social{display:flex;gap:12px}
-        .footer-social a{
-            width:36px;height:36px;background:var(--card);border:1px solid var(--line);
-            border-radius:9px;display:flex;align-items:center;justify-content:center;
-            font-size:0.85rem;transition:background 0.2s,border-color 0.2s;
-        }
-        .footer-social a:hover{background:var(--card2);border-color:var(--line-h)}
-        .footer-copy{
-            max-width:1280px;margin:28px auto 0;padding-top:20px;
-            border-top:1px solid var(--line);
-            display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-        }
-        .footer-copy p{font-size:0.78rem;color:var(--gray)}
-        /* ─── REVEAL ANIMATIONS ─── */
-        .reveal,.reveal-left,.reveal-right{opacity:0;transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
-        .reveal{transform:translateY(32px)}
-        .reveal-left{transform:translateX(-32px)}
-        .reveal-right{transform:translateX(32px)}
-        .revealed{opacity:1!important;transform:none!important}
-        .stagger-1{transition-delay:0.1s}
-        .stagger-2{transition-delay:0.2s}
-        .stagger-3{transition-delay:0.3s}
-        .stagger-4{transition-delay:0.4s}
-        /* ─── MOTOCICLETAS ─── */
-        #motos{background:var(--bg);border-top:1px solid var(--line)}
-        /* ─── RESPONSIVE ─── */
-        @media(max-width:900px){
-            nav{padding:0 20px}
-            .nav-links{display:none}
-            .nav-cta{display:none}
-            .hamburger{display:flex}
-            section{padding:70px 20px}
-            .hero-content{padding:0 20px}
-            .hero-stats{right:20px;gap:24px}
-            .hero-stat-num{font-size:1.4rem}
-            .nosotros-inner{grid-template-columns:1fr}
-            .nosotros-img{height:280px}
-            .contact-grid{grid-template-columns:1fr}
-            .form-grid{grid-template-columns:1fr}
-            .footer-inner{flex-direction:column;text-align:center}
-            .footer-copy{flex-direction:column;text-align:center}
-            .sticky-wa{padding:12px 20px}
-            .sticky-wa-text{display:none}
-        }
-        @media(max-width:600px){
-            .hero-title{font-size:2rem}
-            .hero-stats{position:relative;bottom:auto;right:auto;flex-direction:row;justify-content:flex-start;margin-top:28px;gap:28px}
-            .hero{align-items:flex-end;padding-bottom:40px}
-            .scroll-hint{display:none}
-            .contact-wa-hero{padding:32px 20px}
-            .contact-wa-btns{flex-direction:column;align-items:center}
-        }
-    </style>
-</head>
-<body>
-    <!-- FLOATING WA -->
-    <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20me%20interesa%20un%20veh%C3%ADculo%20de%20Q2%20Saloon" target="_blank" class="wa-float" title="Chatear por WhatsApp">
-        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 …
+</html>
