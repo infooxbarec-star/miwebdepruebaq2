@@ -267,7 +267,7 @@ nav.scrolled{
   animation:heroUp 0.5s var(--ease) 0.08s both;
 }
 .hero-stat{display:flex;flex-direction:column;align-items:center;text-align:center}
-.hero-stat-num{font-size:1.8rem;font-weight:800;color:var(--beige);line-height:1}
+.hero-stat-num{font-size:1.8rem;font-weight:800;color:var(--beige);line-height:1;font-variant-numeric:tabular-nums;min-width:4ch}
 .hero-stat-label{font-size:0.72rem;color:var(--gray-l);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
 
 /* ─── MARQUEE ─── */
@@ -1135,19 +1135,25 @@ function closeMob(){
 }
 
 /* ─── COUNTER ANIMATION ─── */
-function animCounter(el,target,suffix='',dur=1150){
+function animCounters(items){
   let start=null;
   const step=ts=>{
     if(start===null) start=ts;
-    const p=Math.min((ts-start)/dur,1);
-    const eased=p<0.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
-    const value=Math.min(target,Math.floor(eased*target));
-    el.textContent=value+suffix;
-    if(p<1){
+    let done=true;
+    items.forEach(item=>{
+      const p=Math.min((ts-start)/item.dur,1);
+      const eased=1-Math.pow(1-p,2.4);
+      const value=Math.min(item.target,Math.round(item.target*eased));
+      item.el.textContent=value+item.suffix;
+      if(p<1) done=false;
+    });
+    if(!done){
       requestAnimationFrame(step);
       return;
     }
-    el.textContent=target+suffix;
+    items.forEach(item=>{
+      item.el.textContent=item.target+item.suffix;
+    });
   };
   requestAnimationFrame(step);
 }
@@ -1166,9 +1172,11 @@ const counterObs=new IntersectionObserver(entries=>{
     if(e.isIntersecting&&!countersStarted){
       countersStarted=true;
       e.target.classList.add('revealed');
-      animCounter(document.getElementById('stat1'),200,'+',1010);
-      animCounter(document.getElementById('stat2'),10,'+',920);
-      animCounter(document.getElementById('stat3'),500,'+',1130);
+      animCounters([
+        {el:document.getElementById('stat1'),target:200,suffix:'+',dur:1080},
+        {el:document.getElementById('stat2'),target:10,suffix:'+',dur:980},
+        {el:document.getElementById('stat3'),target:500,suffix:'+',dur:1180}
+      ]);
       counterObs.unobserve(e.target);
     }
   });
