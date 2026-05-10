@@ -81,6 +81,15 @@ nav.scrolled{
 }
 .nav-wa:hover{opacity:0.88}
 .nav-wa svg{width:16px;height:16px;fill:#fff}
+.lang-switch{display:flex;align-items:center;gap:8px}
+.lang-sep{color:rgba(240,235,226,0.35);font-size:0.72rem;line-height:1}
+.lang-btn{
+  background:none;border:none;padding:2px 0;
+  color:rgba(240,235,226,0.58);font-size:0.74rem;font-weight:600;letter-spacing:0.12em;
+  text-transform:uppercase;transition:color 0.2s var(--ease),opacity 0.2s var(--ease);
+}
+.lang-btn:hover{color:var(--beige)}
+.lang-btn.active{color:var(--beige);opacity:1}
 .nav-cta{
   background:transparent;border:1px solid var(--beige);color:var(--beige);
   font-size:0.82rem;font-weight:500;padding:8px 18px;border-radius:99px;
@@ -557,6 +566,7 @@ footer{
   nav{padding:0 20px}
   .nav-links{display:none}
   .nav-cta{display:none}
+  .lang-switch{margin-right:2px}
   .hamburger{display:flex}
   section{padding:70px 20px}
   .hero-content{padding:0 20px}
@@ -621,6 +631,11 @@ footer{
       <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       WhatsApp
     </a>
+    <div class="lang-switch" aria-label="Language selector">
+      <button class="lang-btn active" id="lang-es" data-lang="es" type="button">ES</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" id="lang-en" data-lang="en" type="button">EN</button>
+    </div>
     <button class="nav-cta" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Contactar</button>
     <button class="hamburger" id="ham" aria-label="Menú">
       <span></span><span></span><span></span>
@@ -650,7 +665,7 @@ footer{
       <div class="modal-specs" id="modal-specs"></div>
       <button class="modal-wa" id="modal-wa">
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Consultar este vehículo por WhatsApp
+        <span id="modal-wa-text">Consultar este vehículo por WhatsApp</span>
       </button>
     </div>
   </div>
@@ -659,7 +674,7 @@ footer{
 <!-- HERO -->
 <section class="hero" id="inicio">
   <div class="hero-bg-wrap">
-    <img class="hero-bg" src="https://images-porsche.imgix.net/-/media/66332A6C447C474F817B23C66D6D906A_F6DDA391813D4885AC56E90EB7BE5612_CY25J5QOX0005-cayenne-turbo-e-hybrid-coupe-driving?w=1759&q=85&auto=format" alt="Q2 Saloon" onerror="this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80'"/>
+    <img class="hero-bg" src="https://a.storyblok.com/f/322327/5760x2850/bfd3b7659e/cz26w10ox0002-911-turbo-s-rear-desktop.jpg/m/2560x1440/smart/filters:format(webp)?dpl=dpl_AHR3Thhn9JKV9Dr5mGEDexMkWjPU" alt="Q2 Saloon" onerror="this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80'"/>
   </div>
   <div class="hero-logo">
     <img src="https://raw.githubusercontent.com/infooxbarec-star/pruebaq2saloon/refs/heads/main/logo.png" alt="Q2 Saloon Logo"/>
@@ -726,11 +741,11 @@ footer{
   <div class="sticky-wa-btns">
     <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20informaci%C3%B3n%20de%20un%20veh%C3%ADculo" target="_blank" class="sticky-wa-btn">
       <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Asesor 1
+      <span id="sticky-adv-1">Asesor 1</span>
     </a>
     <a href="https://api.whatsapp.com/send?phone=593997929809&text=Hola%2C%20quiero%20informaci%C3%B3n%20de%20un%20veh%C3%ADculo" target="_blank" class="sticky-wa-btn">
       <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Asesor 2
+      <span id="sticky-adv-2">Asesor 2</span>
     </a>
   </div>
 </div>
@@ -829,7 +844,7 @@ footer{
       <div class="video-play">
         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </div>
-      Ver canal de YouTube
+      <span id="video-btn-text">Ver canal de YouTube</span>
     </a>
   </div>
 </div>
@@ -876,11 +891,11 @@ footer{
       <div class="contact-wa-btns">
         <a href="https://api.whatsapp.com/send?phone=593995393656&text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20comprar%20un%20veh%C3%ADculo" target="_blank" class="contact-wa-btn">
           <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Asesor 1 · +593 995 393 656
+          <span id="contact-adv-1">Asesor 1 · +593 995 393 656</span>
         </a>
         <a href="https://api.whatsapp.com/send?phone=593997929809&text=Hola%2C%20quiero%20asesor%C3%ADa%20para%20comprar%20un%20veh%C3%ADculo" target="_blank" class="contact-wa-btn">
           <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Asesor 2 · +593 997 929 809
+          <span id="contact-adv-2">Asesor 2 · +593 997 929 809</span>
         </a>
       </div>
     </div>
@@ -974,6 +989,233 @@ footer{
 
 <script>
 /* ─── VEHICLE DATA ─── */
+const I18N={
+  es:{
+    meta_title:'Q2 Saloon - Encuentra el auto de tus suenos | Quito Ecuador',
+    wa_float_title:'Chatear por WhatsApp',
+    nav_featured:'Destacados',nav_inventory:'Inventario',nav_trust:'Confianza',nav_about:'Nosotros',nav_contact:'Contacto',nav_cta:'Contactar',menu_label:'Menu',
+    mob_trust:'Confianza Q2 Saloon',
+    hero_badge:'Quito, Ecuador · Desde 2015',
+    hero_title_html:'Vehiculos seleccionados.<br><em>Calidad Premium.</em>',
+    hero_sub:'Experiencia personalizada en la compra de tu proximo automovil premium. Cada vehiculo verificado, documentado y listo para ti.',
+    hero_btn_inventory:'Ver inventario',hero_btn_advisory:'Asesoria gratuita',
+    sticky_text_html:'<strong>¿Encontraste tu proximo vehiculo?</strong> Nuestros asesores estan listos para ayudarte.',
+    advisor_1:'Asesor 1',advisor_2:'Asesor 2',
+    featured_label:'Seleccion especial',featured_title:'Vehiculos destacados',featured_sub:'Una curacion exclusiva de los mejores vehiculos disponibles en nuestro inventario.',
+    inventory_label:'Inventario completo',inventory_title:'Todos los vehiculos',inventory_sub:'Filtra por marca, ano o presupuesto. Resultados en tiempo real.',
+    motos_label:'Dos ruedas',motos_title:'Motocicletas',motos_sub:'Motos premium seleccionadas con el mismo estandar de calidad.',
+    trust_label:'Por que elegirnos',trust_title:'Confianza Q2 Saloon',trust_sub:'Cada vehiculo pasa por un proceso riguroso antes de llegar a ti.',
+    trust_1_t:'Vehiculos verificados',trust_1_d:'Cada vehiculo es inspeccionado mecanica y esteticamente por nuestro equipo tecnico certificado antes de publicarse.',
+    trust_2_t:'Documentacion al dia',trust_2_d:'Revisamos matriculas, titulos de propiedad, historial de siniestros y deudas. Tu compras con total tranquilidad.',
+    trust_3_t:'Asesoria personalizada',trust_3_d:'Nuestros asesores te acompanan en cada paso: desde la eleccion del vehiculo hasta el tramite final de transferencia.',
+    trust_4_t:'Opciones de financiamiento',trust_4_d:'Te ayudamos a encontrar la mejor opcion de financiamiento para que puedas adquirir tu vehiculo de forma agil y sin complicaciones.',
+    video_title:'Vive la experiencia Q2 Saloon',video_sub:'Mas de 10 anos siendo el referente de vehiculos premium en Quito.',video_btn:'Ver canal de YouTube',
+    about_label:'Quienes somos',about_title:'Un estandar superior desde 2015',
+    about_1:'<strong>Mas de 10 anos</strong> en el mercado automotriz premium de Quito, construyendo relaciones basadas en la confianza.',
+    about_2:'<strong>500+ clientes satisfechos</strong> que nos han confiado una de las decisiones financieras mas importantes de su vida.',
+    about_3:'<strong>Proceso transparente</strong>: precios justos, vehiculos verificados y asesoria honesta sin presiones.',
+    about_4:'<strong>Ubicados en el norte de Quito</strong>, Av. 6 de Diciembre N42-30 y Tomas de Berlanga, de facil acceso.',
+    contact_hero_t:'¿Listo para encontrar tu vehiculo ideal?',contact_hero_d:'Escribenos ahora. Respuesta inmediata de lunes a sabado.',
+    contact_title:'Informacion de contacto',
+    label_address:'Direccion',label_phone:'Telefono',label_email:'Email',label_hours:'Horario',
+    value_hours:'Lun-Vie 9:00-18:00 / Sab 10:00-14:00',
+    form_title:'Envianos un mensaje',form_name:'Nombre',form_phone:'Telefono',form_email:'Email',form_message:'Mensaje',
+    ph_name:'Tu nombre',ph_phone:'+593 999 000 000',ph_email:'tu@email.com',ph_message:'¿En que vehiculo estas interesado?',
+    form_submit:'Enviar mensaje',form_sent:'¡Mensaje enviado!',
+    footer_rights:'© 2024 Q2 Saloon. Todos los derechos reservados.',
+    footer_addr:'Av. 6 de Diciembre N42-30 y Tomas de Berlanga, Quito, Ecuador',
+    filter_all_brands:'Todas las marcas',filter_all_years:'Todos los anos',filter_any_price:'Cualquier precio',
+    filter_up_30:'Hasta $30,000',filter_30_50:'$30,000 - $50,000',filter_50_70:'$50,000 - $70,000',filter_70_plus:'Mas de $70,000',
+    no_results_title:'Sin resultados',no_results_sub:'Intenta con otros filtros o contactanos para mas opciones.',
+    tag_featured:'Destacado',price_from:'Desde',price_consult:'Consultar',modal_price_consult:'Precio a consultar',btn_inquire:'Consultar',
+    spec_year:'Ano',spec_mileage:'Recorrido',spec_transmission:'Transmision',spec_fuel:'Combustible',spec_location:'Ubicacion',
+    modal_wa_btn:'Consultar este vehiculo por WhatsApp',
+    wa_msg_start:'Hola, me interesa el',wa_msg_at:'a',wa_msg_end:'¿Esta disponible?',
+    fuel_gasoline:'Gasolina',fuel_diesel:'Diesel',trans_auto:'Automatico',trans_manual:'Manual'
+  },
+  en:{
+    meta_title:'Q2 Saloon - Find your dream car | Quito Ecuador',
+    wa_float_title:'Chat on WhatsApp',
+    nav_featured:'Featured',nav_inventory:'Inventory',nav_trust:'Trust',nav_about:'About',nav_contact:'Contact',nav_cta:'Contact Us',menu_label:'Menu',
+    mob_trust:'Q2 Saloon Trust',
+    hero_badge:'Quito, Ecuador · Since 2015',
+    hero_title_html:'Curated vehicles.<br><em>Premium Quality.</em>',
+    hero_sub:'Personalized guidance to buy your next premium car. Every vehicle is verified, documented, and ready for you.',
+    hero_btn_inventory:'View inventory',hero_btn_advisory:'Free advisory',
+    sticky_text_html:'<strong>Found your next vehicle?</strong> Our advisors are ready to help you.',
+    advisor_1:'Advisor 1',advisor_2:'Advisor 2',
+    featured_label:'Special selection',featured_title:'Featured vehicles',featured_sub:'An exclusive curation of the best vehicles currently in our inventory.',
+    inventory_label:'Full inventory',inventory_title:'All vehicles',inventory_sub:'Filter by brand, year, or budget. Real-time results.',
+    motos_label:'Two wheels',motos_title:'Motorcycles',motos_sub:'Premium bikes selected with the same quality standard.',
+    trust_label:'Why choose us',trust_title:'Q2 Saloon Trust',trust_sub:'Every vehicle goes through a rigorous process before reaching you.',
+    trust_1_t:'Verified vehicles',trust_1_d:'Every vehicle is mechanically and visually inspected by our certified technical team before listing.',
+    trust_2_t:'Up-to-date documentation',trust_2_d:'We review registrations, titles, accident history, and debt records so you buy with confidence.',
+    trust_3_t:'Personalized advisory',trust_3_d:'Our advisors guide you at every step, from choosing the vehicle to the final transfer process.',
+    trust_4_t:'Financing options',trust_4_d:'We help you find the right financing option so you can purchase your vehicle quickly and smoothly.',
+    video_title:'Live the Q2 Saloon experience',video_sub:'Over 10 years as Quito\'s premium vehicle benchmark.',video_btn:'Visit YouTube channel',
+    about_label:'Who we are',about_title:'A higher standard since 2015',
+    about_1:'<strong>Over 10 years</strong> in Quito\'s premium automotive market, building relationships based on trust.',
+    about_2:'<strong>500+ happy clients</strong> who trusted us with one of the most important financial decisions in their lives.',
+    about_3:'<strong>Transparent process</strong>: fair pricing, verified vehicles, and honest no-pressure advisory.',
+    about_4:'<strong>Located in northern Quito</strong>, Av. 6 de Diciembre N42-30 y Tomas de Berlanga, easy to reach.',
+    contact_hero_t:'Ready to find your ideal vehicle?',contact_hero_d:'Message us now. Fast response Monday through Saturday.',
+    contact_title:'Contact information',
+    label_address:'Address',label_phone:'Phone',label_email:'Email',label_hours:'Hours',
+    value_hours:'Mon-Fri 9:00-18:00 / Sat 10:00-14:00',
+    form_title:'Send us a message',form_name:'Name',form_phone:'Phone',form_email:'Email',form_message:'Message',
+    ph_name:'Your name',ph_phone:'+593 999 000 000',ph_email:'you@email.com',ph_message:'Which vehicle are you interested in?',
+    form_submit:'Send message',form_sent:'Message sent!',
+    footer_rights:'© 2024 Q2 Saloon. All rights reserved.',
+    footer_addr:'Av. 6 de Diciembre N42-30 y Tomas de Berlanga, Quito, Ecuador',
+    filter_all_brands:'All brands',filter_all_years:'All years',filter_any_price:'Any price',
+    filter_up_30:'Up to $30,000',filter_30_50:'$30,000 - $50,000',filter_50_70:'$50,000 - $70,000',filter_70_plus:'Over $70,000',
+    no_results_title:'No results',no_results_sub:'Try different filters or contact us for more options.',
+    tag_featured:'Featured',price_from:'From',price_consult:'Inquire',modal_price_consult:'Price on request',btn_inquire:'Inquire',
+    spec_year:'Year',spec_mileage:'Mileage',spec_transmission:'Transmission',spec_fuel:'Fuel',spec_location:'Location',
+    modal_wa_btn:'Ask about this vehicle on WhatsApp',
+    wa_msg_start:'Hi, I am interested in the',wa_msg_at:'at',wa_msg_end:'Is it available?',
+    fuel_gasoline:'Gasoline',fuel_diesel:'Diesel',trans_auto:'Automatic',trans_manual:'Manual'
+  }
+};
+
+let currentLang='es';
+
+function t(key){
+  return (I18N[currentLang]&&I18N[currentLang][key])||I18N.es[key]||key;
+}
+
+function trTransmission(val){
+  if(val==='Automático') return t('trans_auto');
+  if(val==='Manual') return t('trans_manual');
+  return val;
+}
+
+function trFuel(val){
+  if(val==='Gasolina') return t('fuel_gasoline');
+  if(val==='Diésel') return t('fuel_diesel');
+  return val;
+}
+
+function setText(sel,key){
+  const el=document.querySelector(sel);
+  if(el) el.textContent=t(key);
+}
+
+function setHTML(sel,key){
+  const el=document.querySelector(sel);
+  if(el) el.innerHTML=t(key);
+}
+
+function setAttr(sel,attr,key){
+  const el=document.querySelector(sel);
+  if(el) el.setAttribute(attr,t(key));
+}
+
+function applyStaticTranslations(){
+  document.title=t('meta_title');
+  document.documentElement.lang=currentLang;
+  setAttr('.wa-float','title','wa_float_title');
+  setText('nav .nav-links li:nth-child(1) a','nav_featured');
+  setText('nav .nav-links li:nth-child(2) a','nav_inventory');
+  setText('nav .nav-links li:nth-child(3) a','nav_trust');
+  setText('nav .nav-links li:nth-child(4) a','nav_about');
+  setText('nav .nav-links li:nth-child(5) a','nav_contact');
+  setText('nav .nav-cta','nav_cta');
+  setAttr('#ham','aria-label','menu_label');
+  setText('#mob-menu a:nth-of-type(1)','nav_featured');
+  setText('#mob-menu a:nth-of-type(2)','nav_inventory');
+  setText('#mob-menu a:nth-of-type(3)','mob_trust');
+  setText('#mob-menu a:nth-of-type(4)','nav_about');
+  setText('#mob-menu a:nth-of-type(5)','nav_contact');
+  setText('.hero-badge','hero_badge');
+  setHTML('.hero-title','hero_title_html');
+  setText('.hero-sub','hero_sub');
+  setText('.hero-actions .btn-primary','hero_btn_inventory');
+  setText('.hero-actions .btn-ghost','hero_btn_advisory');
+  setHTML('.sticky-wa-text','sticky_text_html');
+  setText('#sticky-adv-1','advisor_1');
+  setText('#sticky-adv-2','advisor_2');
+  setText('#featured .section-label','featured_label');
+  setText('#featured .section-title','featured_title');
+  setText('#featured .section-sub','featured_sub');
+  setText('#inventario .section-label','inventory_label');
+  setText('#inventario .section-title','inventory_title');
+  setText('#inventario .section-sub','inventory_sub');
+  setText('#motos .section-label','motos_label');
+  setText('#motos .section-title','motos_title');
+  setText('#motos .section-sub','motos_sub');
+  setText('#trust .section-label','trust_label');
+  setText('#trust .section-title','trust_title');
+  setText('#trust .section-sub','trust_sub');
+  setText('#trust .trust-card:nth-child(1) .trust-title','trust_1_t');
+  setText('#trust .trust-card:nth-child(1) .trust-desc','trust_1_d');
+  setText('#trust .trust-card:nth-child(2) .trust-title','trust_2_t');
+  setText('#trust .trust-card:nth-child(2) .trust-desc','trust_2_d');
+  setText('#trust .trust-card:nth-child(3) .trust-title','trust_3_t');
+  setText('#trust .trust-card:nth-child(3) .trust-desc','trust_3_d');
+  setText('#trust .trust-card:nth-child(4) .trust-title','trust_4_t');
+  setText('#trust .trust-card:nth-child(4) .trust-desc','trust_4_d');
+  setText('#video .video-title','video_title');
+  setText('#video .video-sub','video_sub');
+  setText('#video-btn-text','video_btn');
+  setText('#nosotros .section-label','about_label');
+  setText('#nosotros .section-title','about_title');
+  setHTML('#nosotros .nosotros-item:nth-child(1) p','about_1');
+  setHTML('#nosotros .nosotros-item:nth-child(2) p','about_2');
+  setHTML('#nosotros .nosotros-item:nth-child(3) p','about_3');
+  setHTML('#nosotros .nosotros-item:nth-child(4) p','about_4');
+  setText('#contacto .contact-wa-hero h2','contact_hero_t');
+  setText('#contacto .contact-wa-hero p','contact_hero_d');
+  setText('#contact-adv-1','advisor_1');
+  setText('#contact-adv-2','advisor_2');
+  const c1=document.getElementById('contact-adv-1');
+  const c2=document.getElementById('contact-adv-2');
+  if(c1) c1.textContent=t('advisor_1')+' · +593 995 393 656';
+  if(c2) c2.textContent=t('advisor_2')+' · +593 997 929 809';
+  setText('#contacto .contact-info h3','contact_title');
+  setText('#contacto .contact-info-item:nth-child(1) .contact-info-label','label_address');
+  setText('#contacto .contact-info-item:nth-child(2) .contact-info-label','label_phone');
+  setText('#contacto .contact-info-item:nth-child(3) .contact-info-label','label_email');
+  setText('#contacto .contact-info-item:nth-child(4) .contact-info-label','label_hours');
+  setText('#contacto .contact-info-item:nth-child(4) .contact-info-val','value_hours');
+  setText('#contacto .contact-form h3','form_title');
+  setText('#contacto .form-group:nth-child(1) .form-label','form_name');
+  setText('#contacto .form-group:nth-child(2) .form-label','form_phone');
+  setText('#contacto .form-group:nth-child(3) .form-label','form_email');
+  setText('#contacto .form-group:nth-child(4) .form-label','form_message');
+  setAttr('#contacto .form-group:nth-child(1) .form-input','placeholder','ph_name');
+  setAttr('#contacto .form-group:nth-child(2) .form-input','placeholder','ph_phone');
+  setAttr('#contacto .form-group:nth-child(3) .form-input','placeholder','ph_email');
+  setAttr('#contacto .form-group:nth-child(4) .form-textarea','placeholder','ph_message');
+  setText('.form-submit','form_submit');
+  setText('footer .footer-links a:nth-child(1)','nav_featured');
+  setText('footer .footer-links a:nth-child(2)','nav_inventory');
+  setText('footer .footer-links a:nth-child(3)','mob_trust');
+  setText('footer .footer-links a:nth-child(4)','nav_contact');
+  setText('footer .footer-copy p:nth-child(1)','footer_rights');
+  setText('footer .footer-copy p:nth-child(2)','footer_addr');
+  setText('#modal-wa-text','modal_wa_btn');
+}
+
+function updateLangSwitcher(){
+  const esBtn=document.getElementById('lang-es');
+  const enBtn=document.getElementById('lang-en');
+  if(!esBtn||!enBtn) return;
+  esBtn.classList.toggle('active',currentLang==='es');
+  enBtn.classList.toggle('active',currentLang==='en');
+}
+
+function setLanguage(lang){
+  currentLang=lang==='en'?'en':'es';
+  localStorage.setItem('q2saloon-lang',currentLang);
+  applyStaticTranslations();
+  initFilters();
+  renderFeatured();
+  renderInventory();
+  renderMotos();
+  updateLangSwitcher();
+}
+
 const VEHICLES = [
   {id:1, brand:'Mercedes-Benz', model:'C300', year:2019, price:49900, mileage:66367, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://di-uploads-pod7.dealerinspire.com/autohausonedens/uploads/2018/12/19CClass-CityDaytime.jpg'},
   {id:2, brand:'Toyota', model:'Sequoia Platinum', year:2019, price:85000, mileage:42200, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://toyotacanada.scene7.com/is/image/toyotacanada/2019_Toyota_Sequoia-1?ts=1688746476245&$Media-Large$&dpr=off'},
@@ -997,7 +1239,9 @@ const VEHICLES = [
   {id:20, brand:'Mercedes-Benz', model:'G63 AMG', year:2013, price:179000, mileage:26334, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://hips.hearstapps.com/hmg-prod/amv-prod-cad-assets/images/13q2/510832/2013-mercedes-benz-g63-amg-test-review-car-and-driver-photo-491165-s-original.jpg?fill=1:1&resize=1200:*'},
   {id:21, brand:'Honda', model:'CB650R', year:2022, price:11500, mileage:6200, mileageUnit:'Kms', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://www.eicma.it/wp-content/uploads/2023/08/658bafeda8934a6f90a00aecc6ec49df_honda-cb650r_02-5.jpg'},
   {id:22, brand:'Yamaha', model:'MT-07', year:2022, price:13200, mileage:4500, mileageUnit:'Kms', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://images.hindustantimes.com/auto/img/2021/06/25/600x338/img_1624608448746_1624608459537.jpg'},
-  {id:23, brand:'Porsche', model:'Cayman GT4', year:2023, price:159900, mileage:0, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://a.ccdn.es/cnet/contents/media/porsche/cayman/1092880.jpg/900x505cut/'}
+  {id:23, brand:'Porsche', model:'Cayman GT4', year:2023, price:159900, mileage:0, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://a.ccdn.es/cnet/contents/media/porsche/cayman/1092880.jpg/900x505cut/'},
+  {id:24, brand:'BMW', model:'M3 G80', year:2024, price:null, mileage:0, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://g80.bimmerpost.com/forums/attachment.php?attachmentid=3224002&stc=1&d=1688870988'},
+  {id:25, brand:'Jaguar', model:'F-PACE P400', year:2024, price:null, mileage:80000, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://raw.githubusercontent.com/infooxbarec-star/Q2-SALOON-TEST-1/refs/heads/main/Jaguar_F-PACE_23MY_400_SPORT_Exterior_Rear_3-Quarter_120422%20(1).jpg'}
 ];
 
 /* ─── MODAL SCROLL LOCK ─── */
@@ -1006,24 +1250,27 @@ function openModal(id){
   const v=VEHICLES.find(x=>x.id===id);
   if(!v) return;
   _savedScroll=window.scrollY;
+  const hasPrice=Number.isFinite(v.price)&&v.price>0;
+  const priceLabel=hasPrice?`${t('price_from')} $${v.price.toLocaleString()}`:t('modal_price_consult');
+  const waPriceText=hasPrice?` ${t('wa_msg_at')} $${v.price.toLocaleString()}`:'';
   document.getElementById('modal-img').src=v.img;
   document.getElementById('modal-img').alt=v.brand+' '+v.model;
   document.getElementById('modal-badge').textContent=v.brand;
   document.getElementById('modal-title').textContent=v.brand+' '+v.model+' '+v.year;
-  document.getElementById('modal-price').textContent='Desde $'+v.price.toLocaleString();
+  document.getElementById('modal-price').textContent=priceLabel;
   const specs=[
-    {label:'Año',val:v.year},
-    {label:'Recorrido',val:v.mileage===0?'0 Kms':v.mileage.toLocaleString()+' '+v.mileageUnit},
-    {label:'Transmisión',val:v.transmission},
-    {label:'Combustible',val:v.fuel},
-    {label:'Ubicación',val:v.location}
+    {label:t('spec_year'),val:v.year},
+    {label:t('spec_mileage'),val:v.mileage===0?'0 Kms':v.mileage.toLocaleString()+' '+v.mileageUnit},
+    {label:t('spec_transmission'),val:trTransmission(v.transmission)},
+    {label:t('spec_fuel'),val:trFuel(v.fuel)},
+    {label:t('spec_location'),val:v.location}
   ];
   document.getElementById('modal-specs').innerHTML=specs.map(s=>`
     <div class="modal-spec">
       <div class="modal-spec-label">${s.label}</div>
       <div class="modal-spec-val">${s.val}</div>
     </div>`).join('');
-  const msg=encodeURIComponent(`Hola, me interesa el ${v.brand} ${v.model} ${v.year} a $${v.price.toLocaleString()}. ¿Está disponible?`);
+  const msg=encodeURIComponent(`${t('wa_msg_start')} ${v.brand} ${v.model} ${v.year}${waPriceText}. ${t('wa_msg_end')}`);
   document.getElementById('modal-wa').onclick=()=>window.open(`https://api.whatsapp.com/send?phone=593995393656&text=${msg}`,'_blank');
   document.body.style.position='fixed';
   document.body.style.top=`-${_savedScroll}px`;
@@ -1043,30 +1290,33 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal(null,true
 
 /* ─── CARD BUILDER ─── */
 function buildCard(v,isFeatured=false){
-  const msg=encodeURIComponent(`Hola, me interesa el ${v.brand} ${v.model} ${v.year} a $${v.price.toLocaleString()}. ¿Está disponible?`);
+  const hasPrice=Number.isFinite(v.price)&&v.price>0;
+  const priceLabel=hasPrice?'$'+v.price.toLocaleString():t('price_consult');
+  const waPriceText=hasPrice?` ${t('wa_msg_at')} $${v.price.toLocaleString()}`:'';
+  const msg=encodeURIComponent(`${t('wa_msg_start')} ${v.brand} ${v.model} ${v.year}${waPriceText}. ${t('wa_msg_end')}`);
   return `
   <div class="vcard${isFeatured?' is-featured':''}" onclick="openModal(${v.id})">
     <div class="vcard-img-wrap">
       <img class="vcard-img" src="${v.img}" alt="${v.brand} ${v.model}" loading="lazy" decoding="async"/>
       <span class="vcard-badge">${v.year}</span>
-      ${isFeatured?'<span class="vcard-feat-tag">Destacado</span>':''}
+      ${isFeatured?`<span class="vcard-feat-tag">${t('tag_featured')}</span>`:''}
     </div>
     <div class="vcard-body">
       <div class="vcard-brand">${v.brand}</div>
       <div class="vcard-model">${v.model}</div>
-      <div class="vcard-year">${v.transmission} · ${v.fuel}</div>
+      <div class="vcard-year">${trTransmission(v.transmission)} · ${trFuel(v.fuel)}</div>
       <div class="vcard-meta">
         <span>${v.mileage===0?'0 Kms':v.mileage.toLocaleString()+' '+v.mileageUnit}</span>
         <span>${v.location}</span>
       </div>
       <div class="vcard-footer">
         <div>
-          <div class="vcard-price-label">Desde</div>
-          <div class="vcard-price">$${v.price.toLocaleString()}</div>
+          <div class="vcard-price-label">${t('price_from')}</div>
+          <div class="vcard-price">${priceLabel}</div>
         </div>
         <button class="vcard-wa" onclick="event.stopPropagation();window.open('https://api.whatsapp.com/send?phone=593995393656&text=${msg}','_blank')">
           <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Consultar
+          ${t('btn_inquire')}
         </button>
       </div>
     </div>
@@ -1089,11 +1339,11 @@ function renderInventory(){
   if(year) cars=cars.filter(v=>v.year===parseInt(year));
   if(price){
     const[min,max]=price.split('-').map(Number);
-    cars=cars.filter(v=>v.price>=min&&v.price<=max);
+    cars=cars.filter(v=>Number.isFinite(v.price)&&v.price>=min&&v.price<=max);
   }
   const grid=document.getElementById('inventory-grid');
   if(!cars.length){
-    grid.innerHTML=`<div class="no-results"><h3>Sin resultados</h3><p>Intenta con otros filtros o contáctanos para más opciones.</p></div>`;
+    grid.innerHTML=`<div class="no-results"><h3>${t('no_results_title')}</h3><p>${t('no_results_sub')}</p></div>`;
   }else{
     grid.innerHTML=cars.map(v=>buildCard(v)).join('');
   }
@@ -1112,6 +1362,15 @@ function initFilters(){
   const years=[...new Set(cars.map(v=>v.year))].sort((a,b)=>b-a);
   const bSel=document.getElementById('f-brand');
   const ySel=document.getElementById('f-year');
+  const pSel=document.getElementById('f-price');
+  bSel.innerHTML=`<option value="">${t('filter_all_brands')}</option>`;
+  ySel.innerHTML=`<option value="">${t('filter_all_years')}</option>`;
+  pSel.innerHTML=`
+    <option value="">${t('filter_any_price')}</option>
+    <option value="0-30000">${t('filter_up_30')}</option>
+    <option value="30000-50000">${t('filter_30_50')}</option>
+    <option value="50000-70000">${t('filter_50_70')}</option>
+    <option value="70000-999999">${t('filter_70_plus')}</option>`;
   brands.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;bSel.appendChild(o)});
   years.forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;ySel.appendChild(o)});
 }
@@ -1190,17 +1449,17 @@ if(heroStats) counterObs.observe(heroStats);
 
 /* ─── FORM ─── */
 function submitForm(btn){
-  btn.textContent='¡Mensaje enviado!';
+  btn.textContent=t('form_sent');
   btn.style.background='var(--green)';
   btn.style.color='#fff';
-  setTimeout(()=>{btn.textContent='Enviar mensaje';btn.style.background='';btn.style.color=''},3000);
+  setTimeout(()=>{btn.textContent=t('form_submit');btn.style.background='';btn.style.color=''},3000);
 }
 
 /* ─── INIT ─── */
-initFilters();
-renderFeatured();
-renderInventory();
-renderMotos();
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>setLanguage(btn.dataset.lang));
+});
+setLanguage(localStorage.getItem('q2saloon-lang')||'es');
 
 /* ─── RE-OBSERVE AFTER RENDER ─── */
 setTimeout(()=>{
