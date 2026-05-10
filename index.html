@@ -123,7 +123,7 @@ nav.scrolled{
   transition:background 0.2s;z-index:1;
 }
 .modal-close:hover{background:rgba(255,255,255,0.15)}
-.modal-img{width:100%;height:340px;object-fit:cover;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.modal-img{width:100%;height:340px;object-fit:cover;object-position:center center;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
 .modal-body{padding:32px}
 .modal-badge{
   display:inline-block;background:rgba(200,184,154,0.12);color:var(--beige);
@@ -324,7 +324,7 @@ section{padding:100px 40px}
 }
 .vcard:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.5);border-color:var(--line-h)}
 .vcard-img-wrap{position:relative;height:220px;overflow:hidden}
-.vcard-img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s var(--ease)}
+.vcard-img{width:100%;height:100%;object-fit:cover;object-position:center center;transition:transform 0.6s var(--ease)}
 .vcard:hover .vcard-img{transform:scale(1.05)}
 .vcard-badge{
   position:absolute;top:12px;left:12px;
@@ -983,7 +983,7 @@ const VEHICLES = [
   {id:9, brand:'Land Rover', model:'Range Rover', year:2014, price:83000, mileage:60847, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://static0.pocketlintimages.com/wordpress/wp-content/uploads/120220-cars-news-2014-range-rover-sport-unveiled-with-lighter-look-new-tech-inside-image1-rwqeh3bYB4.jpg'},
   {id:10, brand:'Mercedes-Benz', model:'A 200', year:2020, price:29900, mileage:82235, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://cms.groupeditors.com/img/autodealer/3823_1.jpg?w=&scale=both&quality=100'},
   {id:11, brand:'Toyota', model:'Land Cruiser 200', year:2013, price:65500, mileage:166891, mileageUnit:'Kms', transmission:'Automático', fuel:'Diésel', location:'Quito', type:'vehiculo', featured:false, img:'https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/d9b636c2ec84ddc3bc7f2eb32861b39bdd5f9683/photos/3zqLyo8B-vi9g9j1Ezk-(edit).jpg?t=170887991650'},
-  {id:12, brand:'Porsche', model:'Cayenne', year:2023, price:115990, mileage:28072, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://images.pistonheads.com/nimg/47209/mceu_73425740941684170469720.jpg'},
+  {id:12, brand:'Porsche', model:'911 Carrera S 992', year:2023, price:189900, mileage:0, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://motorcarsofjackson.aandemo.com/imagetag/708/22/f/Used-2023-Porsche-911-Carrera-S-Aerokit-Custom-Jackson-MS.jpg'},
   {id:13, brand:'BMW', model:'325i', year:1993, price:29900, mileage:40018, mileageUnit:'Kms', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.classic.com/vehicles/c5ed3ee24bd08e7fde31ec22ca8702bc2e660b6b.jpg?auto=format&fit=crop&w=600&h=384'},
   {id:14, brand:'Land Rover', model:'Range Rover Evoque', year:2026, price:75900, mileage:0, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://hips.hearstapps.com/hmg-prod/images/2024-land-rover-range-rover-evoque-phev-108-65380163e375b.jpg?crop=0.611xw:0.611xh;0.0689xw,0.264xh&resize=1200:*'},
   {id:15, brand:'Ford', model:'Ranger XL', year:2023, price:46499, mileage:13283, mileageUnit:'Kms', transmission:'Manual', fuel:'Diésel', location:'Quito', type:'vehiculo', featured:false, img:'https://img-ik.cars.co.za/news-site-za/images/2022/11/xlt.jpg?tr=w-1200,h-800'},
@@ -993,7 +993,8 @@ const VEHICLES = [
   {id:19, brand:'Chevrolet', model:'Tahoe', year:2019, price:61990, mileage:78696, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://images.jazelc.com/uploads/spmotors-m2e/2019-tahoe-gal-ext-07.jpg'},
   {id:20, brand:'Mercedes-Benz', model:'G63 AMG', year:2013, price:179000, mileage:26334, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:false, img:'https://hips.hearstapps.com/hmg-prod/amv-prod-cad-assets/images/13q2/510832/2013-mercedes-benz-g63-amg-test-review-car-and-driver-photo-491165-s-original.jpg?fill=1:1&resize=1200:*'},
   {id:21, brand:'Honda', model:'CB650R', year:2022, price:11500, mileage:6200, mileageUnit:'Kms', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://www.eicma.it/wp-content/uploads/2023/08/658bafeda8934a6f90a00aecc6ec49df_honda-cb650r_02-5.jpg'},
-  {id:22, brand:'Yamaha', model:'MT-07', year:2022, price:13200, mileage:4500, mileageUnit:'Kms', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://images.hindustantimes.com/auto/img/2021/06/25/600x338/img_1624608448746_1624608459537.jpg'}
+  {id:22, brand:'Yamaha', model:'MT-07', year:2022, price:13200, mileage:4500, mileageUnit:'Kms', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://images.hindustantimes.com/auto/img/2021/06/25/600x338/img_1624608448746_1624608459537.jpg'},
+  {id:23, brand:'Porsche', model:'Cayman GT4', year:2023, price:159900, mileage:0, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://a.ccdn.es/cnet/contents/media/porsche/cayman/1092880.jpg/900x505cut/'}
 ];
 
 /* ─── MODAL SCROLL LOCK ─── */
@@ -1043,7 +1044,7 @@ function buildCard(v,isFeatured=false){
   return `
   <div class="vcard" onclick="openModal(${v.id})">
     <div class="vcard-img-wrap">
-      <img class="vcard-img" src="${v.img}" alt="${v.brand} ${v.model}" loading="lazy"/>
+      <img class="vcard-img" src="${v.img}" alt="${v.brand} ${v.model}" loading="lazy" decoding="async"/>
       <span class="vcard-badge">${v.year}</span>
       ${isFeatured?'<span class="vcard-feat-tag">Destacado</span>':''}
     </div>
