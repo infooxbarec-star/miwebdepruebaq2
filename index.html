@@ -350,6 +350,9 @@ section{padding:100px 40px}
 .vcard-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:14px}
 .vcard-price-label{font-size:0.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em}
 .vcard-price{font-size:1.25rem;font-weight:800;color:var(--beige)}
+.vcard.is-featured .vcard-price-label,
+.vcard.is-featured .vcard-price{display:none}
+.vcard.is-featured .vcard-footer{justify-content:flex-end}
 .vcard-wa{
   display:flex;align-items:center;gap:6px;
   background:var(--green);color:#fff;font-size:0.75rem;font-weight:700;
@@ -1042,7 +1045,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal(null,true
 function buildCard(v,isFeatured=false){
   const msg=encodeURIComponent(`Hola, me interesa el ${v.brand} ${v.model} ${v.year} a $${v.price.toLocaleString()}. ¿Está disponible?`);
   return `
-  <div class="vcard" onclick="openModal(${v.id})">
+  <div class="vcard${isFeatured?' is-featured':''}" onclick="openModal(${v.id})">
     <div class="vcard-img-wrap">
       <img class="vcard-img" src="${v.img}" alt="${v.brand} ${v.model}" loading="lazy" decoding="async"/>
       <span class="vcard-badge">${v.year}</span>
