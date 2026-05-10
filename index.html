@@ -334,6 +334,8 @@ section{padding:100px 40px}
 .vcard:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.5);border-color:var(--line-h)}
 .vcard-img-wrap{position:relative;height:220px;overflow:hidden}
 .vcard-img{width:100%;height:100%;object-fit:cover;object-position:center center;transition:transform 0.6s var(--ease)}
+.vcard-img-wrap.fit-contain{background:linear-gradient(180deg,#0b1729 0%,#0e1d33 100%)}
+.vcard-img.fit-contain{object-fit:contain}
 .vcard:hover .vcard-img{transform:scale(1.05)}
 .vcard-badge{
   position:absolute;top:12px;left:12px;
@@ -1240,7 +1242,7 @@ const VEHICLES = [
   {id:21, brand:'Honda', model:'CB650R', year:2022, price:11500, mileage:6200, mileageUnit:'Kms', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://www.eicma.it/wp-content/uploads/2023/08/658bafeda8934a6f90a00aecc6ec49df_honda-cb650r_02-5.jpg'},
   {id:22, brand:'Yamaha', model:'MT-07', year:2022, price:13200, mileage:4500, mileageUnit:'Kms', transmission:'Manual', fuel:'Gasolina', location:'Quito', type:'motocicleta', featured:false, img:'https://images.hindustantimes.com/auto/img/2021/06/25/600x338/img_1624608448746_1624608459537.jpg'},
   {id:23, brand:'Porsche', model:'Cayman GT4', year:2023, price:159900, mileage:0, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://a.ccdn.es/cnet/contents/media/porsche/cayman/1092880.jpg/900x505cut/'},
-  {id:24, brand:'BMW', model:'M3 G80', year:2024, price:null, mileage:0, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://g80.bimmerpost.com/forums/attachment.php?attachmentid=3224002&stc=1&d=1688870988'},
+  {id:24, brand:'BMW', model:'M3 G80', year:2024, price:null, mileage:0, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, imageFit:'contain', imagePosition:'center center', img:'https://g80.bimmerpost.com/forums/attachment.php?attachmentid=3224002&stc=1&d=1688870988'},
   {id:25, brand:'Jaguar', model:'F-PACE P400', year:2024, price:null, mileage:80000, mileageUnit:'Kms', transmission:'Automático', fuel:'Gasolina', location:'Quito', type:'vehiculo', featured:true, img:'https://raw.githubusercontent.com/infooxbarec-star/Q2-SALOON-TEST-1/refs/heads/main/Jaguar_F-PACE_23MY_400_SPORT_Exterior_Rear_3-Quarter_120422%20(1).jpg'}
 ];
 
@@ -1253,8 +1255,11 @@ function openModal(id){
   const hasPrice=Number.isFinite(v.price)&&v.price>0;
   const priceLabel=hasPrice?`${t('price_from')} $${v.price.toLocaleString()}`:t('modal_price_consult');
   const waPriceText=hasPrice?` ${t('wa_msg_at')} $${v.price.toLocaleString()}`:'';
-  document.getElementById('modal-img').src=v.img;
-  document.getElementById('modal-img').alt=v.brand+' '+v.model;
+  const modalImg=document.getElementById('modal-img');
+  modalImg.src=v.img;
+  modalImg.alt=v.brand+' '+v.model;
+  modalImg.style.objectFit=v.imageFit==='contain'?'contain':'cover';
+  modalImg.style.objectPosition=v.imagePosition||'center center';
   document.getElementById('modal-badge').textContent=v.brand;
   document.getElementById('modal-title').textContent=v.brand+' '+v.model+' '+v.year;
   document.getElementById('modal-price').textContent=priceLabel;
@@ -1294,10 +1299,12 @@ function buildCard(v,isFeatured=false){
   const priceLabel=hasPrice?'$'+v.price.toLocaleString():t('price_consult');
   const waPriceText=hasPrice?` ${t('wa_msg_at')} $${v.price.toLocaleString()}`:'';
   const msg=encodeURIComponent(`${t('wa_msg_start')} ${v.brand} ${v.model} ${v.year}${waPriceText}. ${t('wa_msg_end')}`);
+  const imgFitClass=v.imageFit==='contain'?' fit-contain':'';
+  const imgStyle=`object-position:${v.imagePosition||'center center'}`;
   return `
   <div class="vcard${isFeatured?' is-featured':''}" onclick="openModal(${v.id})">
-    <div class="vcard-img-wrap">
-      <img class="vcard-img" src="${v.img}" alt="${v.brand} ${v.model}" loading="lazy" decoding="async"/>
+    <div class="vcard-img-wrap${imgFitClass}">
+      <img class="vcard-img${imgFitClass}" style="${imgStyle}" src="${v.img}" alt="${v.brand} ${v.model}" loading="lazy" decoding="async"/>
       <span class="vcard-badge">${v.year}</span>
       ${isFeatured?`<span class="vcard-feat-tag">${t('tag_featured')}</span>`:''}
     </div>
